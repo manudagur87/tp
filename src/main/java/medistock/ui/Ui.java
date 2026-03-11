@@ -1,5 +1,6 @@
 package medistock.ui;
 
+import medistock.inventory.Inventory;
 import medistock.inventory.InventoryItem;
 
 import java.time.LocalDate;
@@ -77,8 +78,15 @@ public class Ui {
 
     public static void printCreate(String name, String unit, int minimumThreshold) {
         printLine();
-        System.out.println(String.format("Product created:\n" + name + " (" + unit + ")\n" + "Minimum threshold: "
+        System.out.println(String.format("Product created:" + name + " (" + unit + ")\n" + "Minimum threshold: "
                         + minimumThreshold));
+        printLine();
+    }
+
+    public static void printInventory(Inventory inventory){
+        System.out.println("Current Pharmaceutical Inventory:");
+        printLine();
+
         printLine();
     }
 
@@ -88,9 +96,10 @@ public class Ui {
     }
 
     public static void printBatch(int quantity, InventoryItem item, LocalDate date) {
-        System.out.println(String.format("Batch of %d %s, expiring on %3$tF has been successfully added!", quantity,
-                        item.getName(), date));
+        System.out.printf("Batch of %d %s, expiring on %3$tF %n has been successfully to the inventory!%n"
+                        , quantity, item.getName(), date);
         printLine();
+        System.out.printf("Stock of %s is now:", item.getName());
         printItemDetails(item);
         printLine();
     }
