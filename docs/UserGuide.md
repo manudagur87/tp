@@ -1,9 +1,4 @@
-# **MediStock User Guide**
-> MediStock is a command-line inventory system for pharmacists and clinical staff 
-> to track and manage their pharmaceutical stock! <br>
-
--screenshot to be added-
-
+# **User Guide**
 ## Quick Start
 
 {Give steps to get started quickly}
@@ -16,22 +11,26 @@
 
 > **Command Format**
 > * Words in `UPPER_CASE` are parameters to be supplied by the user.
-> * flags before parameters such as `u/` must be keyed in as well.
+> * flags before parameters such as `u/` must be keyed in as well. <br>
+>
+> *EXPIRY_DATE must* be formatted as **YYYY-MM-DD**.
+> Dosages should be included in *NAME*. ***[If Applicable]***
 
 ### Creating a new Medication Class: `create`
 Creates a new medication product in the database to be monitored.
 * **Format:** `create n/NAME u/UNIT min/THRESHOLD`
-* **Example:** `create n/Paracetamol u/500mg min/250`
+* **Example:** `create n/Paracetamol 500mg u/Tablets min/250`
 * **Example Output:**
   ```text
-  Product created: Paracetamol 500mg Minimum threshold: 500
+  Product created: Paracetamol 500mg (tablets)
+  Minimum threshold: 500
   ```
 ### Listing all Medications: `list`
 List all items in the inventory with their corresponding stock quantity, earliest expiry       
 date and stock health status.
 * **Format:** `list`
 * **Example Output:**
-  ``` text
+  ```text
   Current Pharmaceutical Inventory: 
   ____________________________________________________________
   1. Paracetamol 500mg 
@@ -47,10 +46,10 @@ date and stock health status.
 
 ### Deleting a Pharmaceutical: `delete`
 Removes a task from your list permanently.
-* **Format:** `delete n/NAME u/UNIT` or `delete i/INDEX`
-* **Example:** `delete n/Vyvanse u/70mg` or `delete i/2`
+* **Format:** `delete n/NAME` or `delete i/INDEX`
+* **Example:** `delete n/Vyvanse 70mg` or `delete i/2`
 * **Example Output:**
-  ``` text
+  ```text
   The following Pharmaceutical has been deleted   
   ____________________________________________________________
   2. Vyvanse 70mg
@@ -62,11 +61,12 @@ Removes a task from your list permanently.
 ### Adding an Item Batch: `batch`
 Adds a batch of a specific item to the inventory. 
 
-* **Format:** `batch n/NAME u/UNIT q/QUANTITY` 
-* **Example:** `batch n/Vyvanse u/70mg q/200`
+* **Format:** `batch n/NAME q/QUANTITY d/EXPIRY_DATE` <br>
+* **Example:** `batch n/Vyvanse 70mg q/200 q/2028-06-07`
 * **Example Output:**
-    ``` text
-  200 Tablets of Vyvanse has added to the Inventory 
+  ```text
+  Batch of 200 Tablets Vyvanse 70mg, expiring on 2028-06-07 
+  was successfully added to the inventory!
   ____________________________________________________________
   Stock of Vyvanse is now:
     2. Vyvanse 70mg
@@ -77,10 +77,10 @@ Adds a batch of a specific item to the inventory.
   ```
 ### Withdrawing Medication from the Inventory: `withdraw`, `wtd`
 Withdraws a quantity of the keyed in medication from the database. 
-* **Format:** `withdraw <PRODUCT_NAME> u/<UNIT> q/<QUANTITY>`  ***or*** <br>
+* **Format:** `withdraw <PRODUCT_NAME> q/<QUANTITY>`  ***or*** <br>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  `wtd <PRODUCT_NAME> u/<UNIT> q/<QUANTITY>`
-* **Example:** `wtd Paracetamol u/500mg q/50`
+  `wtd <PRODUCT_NAME> q/<QUANTITY>`
+* **Example:** `wtd Paracetamol 500mg q/50`
 * **Example Output:**
   ```text
   50 Tablets of Paracetamol has withdrawn from the Inventory 
@@ -90,7 +90,7 @@ Withdraws a quantity of the keyed in medication from the database.
     Total: 250 Tablets
     Earliest Exp: 2030-09-30
     Status: Crticial
-  ____________________________________________________________
+  ____________________________________________________________  
   ```
 ### Quitting the Program: `exit`, `quit`
 Saves the inventory and safely exits from the application. <br>
@@ -99,9 +99,10 @@ Saves the inventory and safely exits from the application. <br>
 * Example output of `exit`: 
 
 ```text
-exit
+____________________________________________________________
 Inventory saved. 
 Thank you for using MediStock, have a nice day!`
+____________________________________________________________
 ```
 
 ## Saving the Data
@@ -112,7 +113,7 @@ Thank you for using MediStock, have a nice day!`
 
 ## FAQ
 
-**Q**: What should I put for the u/UNIT flag, when adding pharmaceuticals like Plasters? 
+**Q**: - to be added - 
 
 **A**: – to be added –
 
@@ -122,11 +123,13 @@ Thank you for using MediStock, have a nice day!`
 ### Command summary
 The following table summarizes the available commands:
 
-| Action             | Format                                                                     | Example                          |
-|:-------------------|:---------------------------------------------------------------------------|:---------------------------------|
-| **CREATE ITEM**    | `create n/NAME u/UNIT min/THRESHOLD`                                       | `create n/Vyvanse u/70mg min/50` |
-| **LIST INVENTORY** | `list`                                                                     | `list`                           |
-| **DELETE ITEM**    | `delete n/NAME u/UNIT` or `delete i/INDEX`                                 | `delete n/Vyvanse u/70mg`                     |
-| **ADD ITEM BATCH** | `batch n/NAME u/UNIT q/QUANTITY`                                           | `batch n/Vyvanse u/70mg q/200`   |
-| **WITHDRAW ITEMS** | `wtd <PRODUCT_NAME> u/<UNIT> q/<QUANTITY>`                                 | `wtd n/Vyvanse u/70mg q/50`      |
-| **QUIT**           | `exit` or `quit`                                                           | `exit`                           |
+| Action                 | Format                                  | Example                              |
+|:-----------------------|:----------------------------------------|:-------------------------------------|
+| **CREATE ITEM**        | `create n/NAME u/UNIT min/THRESHOLD`    | `create n/Vyvanse u/70mg min/50`     |
+| **LIST INVENTORY**     | `list`                                  | `list`                               |
+| **DELETE ITEM**        | `delete n/NAME` or `delete i/INDEX`     | `delete n/Vyvanse u/70mg`            |
+| **ADD BATCH OF ITEMS** | `batch n/NAME q/QUANTITY d/EXPIRY_DATE` | `batch n/Vyvanse q/200 d/2028-06-07` |
+| **WITHDRAW ITEMS**     | `wtd <PRODUCT_NAME>  q/<QUANTITY>`      | `wtd n/Vyvanse 70mg q/50`            |
+| **QUIT**               | `exit` or `quit`                        | `exit`                               |
+> **EXPIRY_DATE must** be formatted as **YYYY-MM-DD**.
+> **Dosage** should be included in **NAME**. *(if applicable)*
