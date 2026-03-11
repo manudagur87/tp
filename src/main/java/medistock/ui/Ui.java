@@ -45,6 +45,7 @@ public class Ui {
     }
 
     public static void greet() {
+        System.out.println(Logo.LOGO);
         printLine();
         System.out.println(WELCOME_MESSAGE);
         printLine();
