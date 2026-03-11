@@ -14,16 +14,11 @@ public class Parser {
 
         if (text.startsWith("create ")) {
             return prepareCreate(text);
-        }
-
-        else if (text.startsWith("batch")) {
+        } else if (text.startsWith("batch")) {
             return prepareBatch(text);
-        }
-
-        else if (text.startsWith("exit") || text.startsWith("quit")) {
+        } else if (text.startsWith("exit") || text.startsWith("quit")) {
             return new ExitCommand();
-        }
-        else  {
+        } else  {
             throw new MediStockException("Unknown command.");
         }
 

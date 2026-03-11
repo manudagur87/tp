@@ -56,8 +56,7 @@ public class InventoryItem {
     public int getBatchQuantity() {
         if (batches.isEmpty()) {
             return 0;
-        }
-        else {
+        } else {
             return batches.size();
         }
     }
