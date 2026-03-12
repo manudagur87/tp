@@ -39,6 +39,12 @@ public class Batch {
     }
 
     public void reduceQuantity(int quantity) {
+        if (quantity < 0) {
+            throw new IllegalArgumentException("Quantity to reduce cannot be negative");
+        }
+        if (quantity > this.quantity) {
+            throw new IllegalArgumentException("Quantity to reduce cannot exceed current stock");
+        }
         this.quantity -= quantity;
     }
 
