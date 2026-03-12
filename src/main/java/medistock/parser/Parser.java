@@ -4,6 +4,7 @@ import medistock.command.BatchCommand;
 import medistock.command.Command;
 import medistock.command.CreateCommand;
 import medistock.command.ExitCommand;
+import medistock.command.ListCommand;
 import medistock.exception.MediStockException;
 
 import java.time.LocalDate;
@@ -16,6 +17,8 @@ public class Parser {
             return prepareCreate(text);
         } else if (text.startsWith("batch")) {
             return prepareBatch(text);
+        } else if (text.equals("list")) {
+            return new ListCommand();
         } else if (text.startsWith("exit") || text.startsWith("quit")) {
             return new ExitCommand();
         } else  {
@@ -52,7 +55,6 @@ public class Parser {
     private static String getMinimum(String text, int minIndex) {
         return text.substring(minIndex + 4).trim();
     }
-
 
     /**
      * Parses the "batch" command input and prepares a BatchCommand for execution.
@@ -118,8 +120,6 @@ public class Parser {
         if (min <= 0) {
             throw new MediStockException("Minimum threshold must be greater than 0.");
         }
-
         return new CreateCommand(name, unit, min);
     }
-
 }
