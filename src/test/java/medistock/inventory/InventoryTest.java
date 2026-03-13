@@ -12,8 +12,8 @@ class InventoryTest {
     void addItem_duplicateName_throwsException() throws MediStockException {
         Inventory inventory = new Inventory();
 
-        InventoryItem firstItem = new InventoryItem("Aspirin", "500mg", 200);
-        InventoryItem duplicateItem = new InventoryItem("Aspirin", "500mg", 200);
+        InventoryItem firstItem = new InventoryItem("Aspirin 500mg", "Tablet", 200);
+        InventoryItem duplicateItem = new InventoryItem("Aspirin 500mg", "Tablet", 200);
 
         inventory.addItem(firstItem);
         assertThrows(MediStockException.class,
@@ -25,7 +25,7 @@ class InventoryTest {
         Inventory inventory = new Inventory();
         int initialInventorySize = inventory.getSize();
 
-        InventoryItem validItem = new InventoryItem("Aspirin", "500mg", 200);
+        InventoryItem validItem = new InventoryItem("Aspirin 500mg", "Tablet", 200);
         inventory.addItem(validItem);
         assertEquals(initialInventorySize + 1, inventory.getSize());
     }

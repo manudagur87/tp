@@ -69,6 +69,24 @@ public class InventoryItem {
     }
 
     /**
+     * Returns the earliest expiry date
+     *
+     * @return the earliest expiry date
+     */
+    public LocalDate getEarliestExpiry() throws MediStockException {
+        if (batches.isEmpty()) {
+            throw new MediStockException("There is no recorded stock for this item");
+        }
+
+        LocalDate earliestDate = batches.get(0).getExpiryDate();
+        for (Batch batch : batches) {
+            if (earliestDate.isBefore(batch.getExpiryDate())) {
+                earliestDate = batch.getExpiryDate();
+            }
+        }
+        return earliestDate;
+    }
+    /**
      * Returns the total quantity of this item across all batches.
      *
      * @return The total quantity.
@@ -81,6 +99,15 @@ public class InventoryItem {
         }
 
         return totalQuantity;
+    }
+
+    public String  getStockStatus() {
+        int quantity = getQuantity();
+        if (isLowStock()) {
+            return "Critical";
+        } else {
+            return "Healthy";
+        }
     }
 
     /**
@@ -162,4 +189,10 @@ public class InventoryItem {
     public boolean isLowStock() {
         return getQuantity() < minimumThreshold;
     }
+
+    public int getThreshold() {
+        return minimumThreshold;
+    }
 }
+
+

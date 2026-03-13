@@ -21,10 +21,16 @@ public class BatchCommand extends Command {
 
     @Override
     public void execute(Inventory inventory, Ui ui) throws MediStockException {
+
+        if (!inventory.hasItem(this.name)) {
+            throw new MediStockException("Item '" + this.name + "' does not exist in inventory." +
+                            " Please add the item first.");
+        }
+
         InventoryItem item = inventory.getItem(name);
         int batchNumber = item.getBatchQuantity() + 1;
         Batch newBatch = new Batch(batchNumber, quantity, expiryDate);
         item.addBatch(newBatch);
-        ui.printBatch(quantity, item, expiryDate);
+        ui.printBatch(inventory, item, quantity, expiryDate);
     }
 }
