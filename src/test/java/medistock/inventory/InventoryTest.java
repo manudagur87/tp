@@ -39,14 +39,25 @@ class InventoryTest {
     }
 
     @Test
-    void removeItem() {
-    }
-
-    @Test
     void getSize() {
     }
 
     @Test
-    void deleteItem_validItem_success() {
+    void deleteItem_existingItem_removesItem() throws MediStockException {
+        Inventory inventory = new Inventory();
+
+        String name = "Aspirin 500mg";
+        InventoryItem existingItem = new InventoryItem(name, "Tablet", 200);
+        inventory.addItem(existingItem);
+        inventory.deleteItem(name);
+        assertEquals(0, inventory.getSize());
+    }
+
+    @Test
+    void deleteItem_nonExistingItem_throwsException() {
+        Inventory inventory = new Inventory();
+
+        assertThrows(MediStockException.class,
+                () -> inventory.deleteItem("Panadol"));
     }
 }
