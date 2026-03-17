@@ -12,9 +12,23 @@ import java.util.Scanner;
  */
 public class Ui {
 
+    public static final String BATCH_FORMAT =
+            "Format: batch n/NAME q/QUANTITY d/EXPIRY_DATE(YYYY-MM-DD)";
+
+    public static final String CREATE_FORMAT =
+            "Format: create n/NAME u/UNIT min/THRESHOLD";
+
+    public static final String WITHDRAW_FORMAT =
+            "Format: withdraw n/NAME q/QUANTITY";
+
+    public static final String DELETE_FORMAT =
+            "Format: delete 'n/NAME' or 'i/INDEX'";
     private static final String EXIT_MESSAGE =
             "Inventory saved\nThank you for using MediStock, have a nice day!";
-    private static final String WELCOME_MESSAGE = "Welcome to medistock";
+
+    private static final String WELCOME_MESSAGE =
+            "Welcome to medistock\nType <help> to see the list of available commands.";
+
     private final Scanner scanner;
 
     /**
@@ -62,7 +76,7 @@ public class Ui {
      */
     public void printError(String e) {
         printLine();
-        System.out.println("Invalid Input: " + e);
+        System.out.println(e);
         printLine();
     }
 
@@ -180,6 +194,18 @@ public class Ui {
         printLine();
         System.out.printf("Stock of %s is now: ", item.getName());
         printItemDetails(item);
+        printLine();
+    }
+
+    public void printCommandList() {
+        printLine();
+        System.out.println("Available commands:");
+        System.out.println("1. list");
+        System.out.println("2. create " + CREATE_FORMAT);
+        System.out.println("3. delete " + DELETE_FORMAT);
+        System.out.println("4. batch " + BATCH_FORMAT);
+        System.out.println("5. withdraw " + WITHDRAW_FORMAT);
+        System.out.println("6. exit");
         printLine();
     }
 
