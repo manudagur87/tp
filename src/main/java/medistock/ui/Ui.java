@@ -27,7 +27,7 @@ public class Ui {
             "Inventory saved\nThank you for using MediStock, have a nice day!";
 
     private static final String WELCOME_MESSAGE =
-            "Welcome to medistock \nType <help> to see the list of available commands.";
+            "Welcome to medistock\nType <help> to see the list of available commands.";
 
     private final Scanner scanner;
 
