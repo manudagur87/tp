@@ -1,6 +1,7 @@
 package medistock.inventory;
 
 import medistock.exception.MediStockException;
+import medistock.storage.Storable;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.List;
  * Represents an item in the medical inventory with a name, unit,
  * minimum threshold, total quantity, and its batches.
  */
-public class InventoryItem {
+public class InventoryItem implements Storable {
 
     private final String name;
     private final String unit;
@@ -179,6 +180,16 @@ public class InventoryItem {
                 i++;
             }
         }
+    }
+
+    @Override
+    public String toFileFormat(){
+        String descriptionLine = String.format("Name: %s (%s) | Min: %d", this.name, this.unit, this.minimumThreshold);
+        StringBuilder batchLine = new StringBuilder(String.format("[Batches] %n"));
+        for (Batch batch : batches) {
+            batchLine.append(batch.toFileFormat());
+        }
+        return descriptionLine + batchLine;
     }
 
     /**
