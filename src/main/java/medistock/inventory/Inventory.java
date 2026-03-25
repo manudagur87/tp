@@ -4,9 +4,12 @@ import medistock.exception.MediStockException;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Represents the full inventory of tracked medical items.
@@ -73,6 +76,25 @@ public class Inventory {
         }
         logger.log(Level.FINE, "Retrieved item: " + name);
         return items.get(key);
+    }
+
+    /**
+     * Finds all items whose name contain the specified keyword.
+     * The search is case-insensitive.
+     *
+     * @param keyword The keyword to search for in item names.
+     * @return List of items that match the keyword.
+     */
+    public List<InventoryItem> findItem(String keyword) {
+        assert  keyword != null: ASSERT_NAME_NOT_NULL;
+        String key = normalizeName(keyword);
+
+        List<InventoryItem> matchedItems = items.values().stream()
+                .filter(item -> item.getName()
+                        .toLowerCase()
+                        .contains(key))
+                .collect(toList());
+        return matchedItems;
     }
 
     /**

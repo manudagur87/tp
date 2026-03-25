@@ -3,6 +3,8 @@ package medistock.inventory;
 import medistock.exception.MediStockException;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -59,5 +61,74 @@ class InventoryTest {
 
         assertThrows(MediStockException.class,
                 () -> inventory.deleteItem("Panadol"));
+    }
+
+    @Test
+    void findItem_matchingItem_findsItem() throws MediStockException {
+        Inventory inventory = new Inventory();
+
+        String name = "Aspirin 500mg";
+        InventoryItem matchingItem = new InventoryItem(name, "Tablet", 200);
+        inventory.addItem(matchingItem);
+        
+        List<InventoryItem> result = inventory.findItem("Aspirin");
+        
+        assertEquals(1, result.size());
+        assertEquals(matchingItem, result.get(0));
+    }
+
+    @Test
+    void findItem_noMatches_returnsEmptyList() throws MediStockException {
+        Inventory inventory = new Inventory();
+
+        InventoryItem item = new InventoryItem("Aspirin 500mg", "Tablet", 200);
+        inventory.addItem(item);
+        
+        List<InventoryItem> result = inventory.findItem("Panadol");
+        
+        assertEquals(0, result.size());
+    }
+
+    @Test
+    void findItem_multipleMatches_findsAllItems() throws MediStockException {
+        Inventory inventory = new Inventory();
+
+        InventoryItem item1 = new InventoryItem("Aspirin 500mg", "Tablet", 200);
+        InventoryItem item2 = new InventoryItem("Aspirin 100mg", "Tablet", 150);
+        InventoryItem item3 = new InventoryItem("Panadol 500mg", "Tablet", 300);
+        
+        inventory.addItem(item1);
+        inventory.addItem(item2);
+        inventory.addItem(item3);
+        
+        List<InventoryItem> result = inventory.findItem("Aspirin");
+        
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    void findItem_caseInsensitive_findsItem() throws MediStockException {
+        Inventory inventory = new Inventory();
+
+        InventoryItem item = new InventoryItem("Aspirin 500mg", "Tablet", 200);
+        inventory.addItem(item);
+        
+        List<InventoryItem> result = inventory.findItem("ASPIRIN");
+        
+        assertEquals(1, result.size());
+        assertEquals(item, result.get(0));
+    }
+
+    @Test
+    void findItem_partialMatch_findsItem() throws MediStockException {
+        Inventory inventory = new Inventory();
+
+        InventoryItem item = new InventoryItem("Aspirin 500mg", "Tablet", 200);
+        inventory.addItem(item);
+        
+        List<InventoryItem> result = inventory.findItem("rin");
+        
+        assertEquals(1, result.size());
+        assertEquals(item, result.get(0));
     }
 }

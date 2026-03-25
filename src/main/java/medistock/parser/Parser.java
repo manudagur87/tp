@@ -5,10 +5,11 @@ import medistock.command.Command;
 import medistock.command.CreateCommand;
 import medistock.command.DeleteCommandIndex;
 import medistock.command.DeleteCommandName;
-import medistock.command.HelpCommand;
 import medistock.command.ExitCommand;
-import medistock.command.WithdrawCommand;
+import medistock.command.FindCommand;
+import medistock.command.HelpCommand;
 import medistock.command.ListCommand;
+import medistock.command.WithdrawCommand;
 import medistock.exception.MediStockException;
 import medistock.ui.Ui;
 
@@ -36,6 +37,9 @@ public class Parser {
             return new ListCommand();
         } else if (text.startsWith("exit") || text.startsWith("quit")) {
             return new ExitCommand();
+        } else if (text.equals("find") || input.startsWith("find ")) {
+            String keyword = parseFind(text);
+            return new FindCommand(keyword);
         } else if (text.equals("help")) {
             return new HelpCommand();
         } else {
@@ -241,4 +245,20 @@ public class Parser {
         return new DeleteCommandIndex(index);
     }
 
+    /**
+     * Parses a find command and extracts the keyword.
+     *
+     * @param text The full find command string.
+     * @return The keyword string.
+     * @throws MediStockException If the keyword is missing.
+     */
+    private static String parseFind(String text) throws MediStockException {
+        String[] parts = text.split(" ", 2);
+        String keyword =parts.length < 2 ? "" : parts[1].trim();
+
+        if (keyword.isEmpty()) {
+            throw new MediStockException(Ui.ERROR_MISSING_KEYWORD);
+        }
+        return keyword;
+    }
 }

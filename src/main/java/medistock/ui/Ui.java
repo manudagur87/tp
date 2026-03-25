@@ -5,6 +5,7 @@ import medistock.inventory.Inventory;
 import medistock.inventory.InventoryItem;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -18,11 +19,18 @@ public class Ui {
     public static final String CREATE_FORMAT =
             "Format: create n/NAME u/UNIT min/THRESHOLD";
 
-    public static final String WITHDRAW_FORMAT =
-            "Format: withdraw n/NAME q/QUANTITY";
+    public static final String FIND_FORMAT =
+            "Format: find <keyword>";
 
     public static final String DELETE_FORMAT =
             "Format: delete 'n/NAME' or 'i/INDEX'";
+
+    public static final String WITHDRAW_FORMAT =
+            "Format: withdraw n/NAME q/QUANTITY";
+
+    public static final String ERROR_MISSING_KEYWORD =
+            "Missing name of the item you want to find.";
+
     private static final String EXIT_MESSAGE =
             "Inventory saved\nThank you for using MediStock, have a nice day!";
 
@@ -117,6 +125,26 @@ public class Ui {
         }
     }
 
+    /**
+     * Displays a list of items that contains the keyword
+     *
+     * @param matchedItems The items that contain the desired keyword
+     */
+    public void showFindList(Inventory inventory, List<InventoryItem> matchedItems) throws MediStockException {
+        if (matchedItems.isEmpty()) {
+            printLine();
+            System.out.println("No matches found!");
+            printLine();
+        } else {
+            printLine();
+            System.out.println("Here are the matching items in your inventory:");
+            for (InventoryItem item : matchedItems) {
+                printItemDetails(inventory, item);
+            }
+            printLine();
+        }
+    }
+
     public int getItemIndex(Inventory inventory, String searchName) {
         int itemCount = 1;
         for (InventoryItem item : inventory.getAllItems()) {
@@ -167,8 +195,12 @@ public class Ui {
         printSpacing();
         System.out.println(String.format("Total: %d %s", item.getQuantity(), item.getUnit()));
         printSpacing();
-        System.out.println(String.format("Earliest Exp: %tF %n    Status: %s", item.getEarliestExpiry(),
-                        item.getStockStatus()));
+        try {
+            System.out.println(String.format("Earliest Exp: %tF %n    Status: %s", item.getEarliestExpiry(),
+                            item.getStockStatus()));
+        } catch (MediStockException e) {
+            System.out.println("Earliest Exp: N/A \n    Status: " + item.getStockStatus());
+        }
     }
 
     public void printBatch(Inventory inventory, InventoryItem item, int quantity, LocalDate date)
@@ -200,8 +232,8 @@ public class Ui {
         System.out.println("3. delete " + DELETE_FORMAT);
         System.out.println("4. batch " + BATCH_FORMAT);
         System.out.println("5. withdraw " + WITHDRAW_FORMAT);
+        System.out.println("6. find " + FIND_FORMAT);
         System.out.println("6. exit");
         printLine();
     }
-
 }
