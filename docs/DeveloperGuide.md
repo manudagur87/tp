@@ -12,11 +12,18 @@
 ## Product scope
 ### Target user profile
 
-{Describe the target user profile}
+- Pharmacists and pharmacy technicians managing medicine inventory in small to mid-sized clinics or pharmacies.
+- Users who prefer a CLI over a GUI for faster data entry during busy periods.
+- Users who need to track batch-level details such as expiry dates and quantities.
+- Users comfortable with typing commands and who value speed over visual interfaces.
+- Users who need to ensure compliance with expiry regulations and avoid dispensing expired medicine.
 
 ### Value proposition
 
-{Describe the value proposition: what problem does it solve?}
+MediStock helps pharmacy staff manage pharmaceutical inventory faster than a typical GUI application.
+It tracks medicines at the batch level, automatically flags and warns about expired stock during routine operations,
+and prevents expired batches from being withdrawn. This reduces the risk of dispensing expired medicine,
+simplifies stock-taking, and helps maintain minimum stock thresholds so that critical items are always available.
 
 ## User Stories
 
