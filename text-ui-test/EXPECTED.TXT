@@ -47,3 +47,4 @@ ____________________________________________________________
 Inventory saved
 Thank you for using MediStock, have a nice day!
 ____________________________________________________________
+Created a new file at './data/History.txt' to store history.
