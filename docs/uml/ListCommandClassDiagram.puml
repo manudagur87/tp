@@ -1,0 +1,65 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide circle
+
+title ListCommand Class Diagram
+
+abstract class "<<abstract>>\nCommand" as Command {
+    + {abstract} execute(inventory: Inventory, ui: Ui)
+    + isExit(): boolean
+}
+
+class ListCommand {
+    - {static} logger: Logger
+    + execute(inventory: Inventory, ui: Ui)
+}
+
+class Inventory {
+    - items: Map<String, InventoryItem>
+    + getActiveBatches(): List<InventoryItem>
+    + getExpiredBatches(): List<InventoryItem>
+}
+
+class InventoryItem {
+    - name: String
+    - unit: String
+    - minimumThreshold: int
+    - batchQuantity: int
+    - batches: List<Batch>
+    + getActiveBatches(): List<Batch>
+    + getExpiredBatches(): List<Batch>
+    + sortAndMarkExpiredBatches(): void
+}
+
+class Batch {
+    - batchNumber: int
+    - quantity: int
+    - expiryDate: LocalDate
+    - isExpired: boolean
+
+}
+
+class Ui {
+    - scanner: Scanner
+    + showInventoryList(inventory: Inventory)
+    + printActiveItemDetails(inventory: Inventory, item: InventoryItem)
+    + printExpiredItemDetails(inventory: Inventory, item: InventoryItem)
+}
+
+
+ListCommand --|> Command
+
+
+
+ListCommand ..> Inventory : uses
+ListCommand ..> Ui : uses
+
+Inventory "1" *-- "many" InventoryItem : contains
+InventoryItem "1" *-- "many" Batch : contains
+
+Ui ..> Inventory : displays
+Ui ..> InventoryItem : displays
+Ui ..> Batch : displays
+
+@enduml
+

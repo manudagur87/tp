@@ -1,0 +1,36 @@
+@startuml
+title HelpCommand Sequence Diagram
+
+actor User
+participant ":Medistock" as App
+participant ":Ui" as Ui
+participant ":Parser" as Parser
+participant ":HelpCommand" as HelpCommand
+
+User -> App : run "help"
+activate App
+
+App -> Ui : getInput()
+activate Ui
+Ui --> App : "help"
+deactivate Ui
+
+App -> Parser : parseCommand("help")
+activate Parser
+Parser --> App : new HelpCommand()
+deactivate Parser
+
+App -> HelpCommand : execute(inventory, ui)
+activate HelpCommand
+
+HelpCommand -> Ui : printCommandList()
+activate Ui
+Ui --> HelpCommand : return
+deactivate Ui
+
+HelpCommand --> App : return
+deactivate HelpCommand
+
+App --> User : return
+deactivate App
+@enduml

@@ -1,0 +1,72 @@
+@startuml
+title FindCommand Sequence Diagram
+
+actor User
+participant ":Medistock" as App
+participant ":Ui" as Ui
+participant ":Parser" as Parser
+participant ":FindCommand" as FindCommand
+participant ":Inventory" as Inventory
+
+User -> App : run "find <keyword>"
+activate App
+
+App -> Ui : getInput()
+activate Ui
+Ui --> App : input:String
+deactivate Ui
+
+App -> Parser : parseCommand(input:String)
+activate Parser
+
+Parser -> Parser : parseFind(text:String)
+activate Parser
+Parser --> Parser : keyword:String
+deactivate Parser
+
+create FindCommand
+Parser -> FindCommand : new FindCommand(keyword:String)
+activate FindCommand
+FindCommand --> Parser : command:FindCommand
+deactivate FindCommand
+
+Parser --> App : command:FindCommand
+deactivate Parser
+
+App -> FindCommand : execute(inventory:Inventory, ui:Ui)
+activate FindCommand
+
+FindCommand -> Inventory : findItem(keyword:String)
+activate Inventory
+Inventory --> FindCommand : matchedItems:List<InventoryItem>
+deactivate Inventory
+
+FindCommand -> Ui : showFindList(inventory:Inventory, matchedItems:List)
+activate Ui
+
+alt matchedItems is empty
+    Ui -> Ui : print("No matches found!")
+    activate Ui
+    deactivate Ui
+else matchedItems not empty
+    Ui -> Ui : print("Here are the matching items...")
+    activate Ui
+    deactivate Ui
+
+    loop each item in matchedItems
+        Ui -> Ui : printItemDetails(inventory, item)
+        activate Ui
+        deactivate Ui
+    end
+end
+
+Ui --> FindCommand
+deactivate Ui
+
+FindCommand --> App
+deactivate FindCommand
+
+App --> User : results shown
+deactivate App
+
+@enduml
