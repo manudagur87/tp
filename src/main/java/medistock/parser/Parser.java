@@ -1,7 +1,8 @@
 package medistock.parser;
 
 import medistock.command.BatchCommand;
-import medistock.command.Command;
+import medistock.command.HistoryCommand;
+import medistock.command.String;
 import medistock.command.CreateCommand;
 import medistock.command.DeleteCommandIndex;
 import medistock.command.DeleteCommandName;
@@ -16,8 +17,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 public class Parser {
-    public static Command parseCommand(String input) throws MediStockException {
-        String text = input.trim();
+    public static String parseCommand(java.lang.String input) throws MediStockException {
+        java.lang.String text = input.trim();
 
         if (text.startsWith("create ")) {
             return prepareCreate(text);
@@ -35,6 +36,8 @@ public class Parser {
             return new ExitCommand();
         } else if (text.equals("help")) {
             return new HelpCommand();
+        } else if (text.equals("history")) {
+            return new HistoryCommand();
         } else {
             throw new MediStockException("Unknown command.");
         }
@@ -52,7 +55,7 @@ public class Parser {
      * @param index2 Optional: The starting index of the next parameter prefix.
      * @return The trimmed string value of the argument.
      */
-    private static String getArgument(String text, int index1, int... index2) {
+    private static java.lang.String getArgument(java.lang.String text, int index1, int... index2) {
         if (index2.length > 0) {
             return text.substring(index1 + 2, index2[0]).trim();
         } else {
@@ -67,7 +70,7 @@ public class Parser {
      * @param minIndex The starting index of the "min/" prefix.
      * @return The trimmed string value of the minimum threshold.
      */
-    private static String getMinimum(String text, int minIndex) {
+    private static java.lang.String getMinimum(java.lang.String text, int minIndex) {
         return text.substring(minIndex + 4).trim();
     }
 
@@ -79,7 +82,7 @@ public class Parser {
      * @throws MediStockException If the format is invalid or parameters are out of
      *                            order.
      */
-    public static Command prepareBatch(String text) throws MediStockException {
+    public static String prepareBatch(java.lang.String text) throws MediStockException {
         int nameIndex = text.indexOf("n/");
         int quantIndex = text.indexOf("q/");
         int expiryIndex = text.indexOf("d/");
@@ -93,7 +96,7 @@ public class Parser {
                             Ui.BATCH_FORMAT);
         }
 
-        String name = getArgument(text, nameIndex, quantIndex).trim();
+        java.lang.String name = getArgument(text, nameIndex, quantIndex).trim();
 
         int quant;
         try {
@@ -124,7 +127,7 @@ public class Parser {
      * @throws MediStockException If parameters are missing, empty, or incorrectly
      *                            formatted.
      */
-    private static Command prepareCreate(String text) throws MediStockException {
+    private static String prepareCreate(java.lang.String text) throws MediStockException {
         int nameIndex = text.indexOf("n/");
         int unitIndex = text.indexOf("u/");
         int minIndex = text.indexOf("min/");
@@ -137,9 +140,9 @@ public class Parser {
             throw new MediStockException("Use create format: " + Ui.CREATE_FORMAT);
         }
 
-        String name = getArgument(text, nameIndex, unitIndex);
-        String unit = getArgument(text, unitIndex, minIndex);
-        String minText = getMinimum(text, minIndex);
+        java.lang.String name = getArgument(text, nameIndex, unitIndex);
+        java.lang.String unit = getArgument(text, unitIndex, minIndex);
+        java.lang.String minText = getMinimum(text, minIndex);
 
         if (name.isEmpty() || unit.isEmpty() || minText.isEmpty()) {
             throw new MediStockException("Name, unit, and minimum threshold must not be empty.");
@@ -167,7 +170,7 @@ public class Parser {
      * @throws MediStockException If the format is invalid or parameters are out of
      *                            order.
      */
-    private static Command prepareWithdraw(String text) throws MediStockException {
+    private static String prepareWithdraw(java.lang.String text) throws MediStockException {
         int nameIndex = text.indexOf("n/");
         int quantIndex = text.indexOf("q/");
 
@@ -178,8 +181,8 @@ public class Parser {
             throw new MediStockException("Use correct format: " + Ui.WITHDRAW_FORMAT);
         }
 
-        String name = getArgument(text, nameIndex, quantIndex);
-        String quantText = getArgument(text, quantIndex);
+        java.lang.String name = getArgument(text, nameIndex, quantIndex);
+        java.lang.String quantText = getArgument(text, quantIndex);
 
         if (name.isEmpty() || quantText.isEmpty()) {
             throw new MediStockException("Name and quantity must not be empty.");
@@ -199,14 +202,14 @@ public class Parser {
         return new WithdrawCommand(name, quant);
     }
 
-    private static Command prepareDeleteName(String text) throws MediStockException {
+    private static String prepareDeleteName(java.lang.String text) throws MediStockException {
         int nameIndex = text.indexOf("n/");
 
         if (nameIndex == -1) {
             throw new MediStockException("Invalid delete format. " + Ui.DELETE_FORMAT);
         }
 
-        String name = getArgument(text, nameIndex);
+        java.lang.String name = getArgument(text, nameIndex);
 
         if (name.isEmpty()) {
             throw new MediStockException("Name must not be empty.");
@@ -215,14 +218,14 @@ public class Parser {
         return new DeleteCommandName(name);
     }
 
-    private static Command prepareDeleteIndex(String text) throws MediStockException {
+    private static String prepareDeleteIndex(java.lang.String text) throws MediStockException {
         int nameIndex = text.indexOf("i/");
 
         if (nameIndex == -1) {
             throw new MediStockException("Invalid delete format. " + Ui.DELETE_FORMAT);
         }
 
-        String indexText = getArgument(text, nameIndex);
+        java.lang.String indexText = getArgument(text, nameIndex);
         int index;
 
         try {

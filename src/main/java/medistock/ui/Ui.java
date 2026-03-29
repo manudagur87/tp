@@ -5,6 +5,7 @@ import medistock.inventory.Inventory;
 import medistock.inventory.InventoryItem;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -117,6 +118,27 @@ public class Ui {
         }
     }
 
+    /**
+     * Shows the history to the user.
+     *
+     * @param histories The history to display.
+     */
+    public void showHistory(List<String> histories) throws MediStockException {
+        if (histories.isEmpty()) {
+            printEmptyHistoryMessage();
+        } else {
+            int itemIndex = 1;
+            int maxIndex = histories.size();
+            printLine();
+            System.out.println("History of Stocks:");
+            for (java.lang.String commandText : histories) {
+                System.out.println(itemIndex + ". " + commandText);;
+                itemIndex++;
+            }
+            printLine();
+        }
+    }
+
     public int getItemIndex(Inventory inventory, String searchName) {
         int itemCount = 1;
         for (InventoryItem item : inventory.getAllItems()) {
@@ -135,6 +157,12 @@ public class Ui {
         printLine();
     }
 
+    private static void printEmptyHistoryMessage() {
+        printLine();
+        System.out.println("Currently no history recorded.");
+        printLine();
+    }
+
     public static void printCreate(String name, String unit, int minimumThreshold) {
         printLine();
         System.out.printf("Product created:" + name + " (" + unit + ")\n" + "Minimum threshold: "
@@ -144,9 +172,7 @@ public class Ui {
 
     public void printDelete(InventoryItem deletedItem) {
         printLine();
-        System.out.printf("Product deleted:" + deletedItem.getName() + " (" + deletedItem.getUnit() + ")\n"
-                + "Minimum threshold: "
-                + deletedItem.getMinimumThreshold() + "%n");
+        System.out.printf("Product deleted:" + deletedItem.getName() + " (" + deletedItem.getUnit() + ")\n");
         printLine();
     }
 
