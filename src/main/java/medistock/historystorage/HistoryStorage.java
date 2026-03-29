@@ -8,8 +8,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.List;
 
-import medistock.command.*;
-
 public class HistoryStorage {
     private final String filePath;
     private final File file;

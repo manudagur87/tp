@@ -2,6 +2,8 @@ package medistock.parser;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import medistock.command.Command;
 import org.junit.jupiter.api.Test;
 
 import medistock.command.WithdrawCommand;
@@ -13,7 +15,7 @@ public class WithdrawParserTest {
     void parseCommand_validWithdraw_returnsWithdrawCommand() throws MediStockException {
         String input = "withdraw n/Aspirin q/5";
 
-        String command = Parser.parseCommand(input);
+        Command command = Parser.parseCommand(input);
         assertInstanceOf(WithdrawCommand.class, command);
     }
 
