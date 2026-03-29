@@ -8,6 +8,7 @@ import medistock.command.DeleteCommandName;
 import medistock.command.ExitCommand;
 import medistock.command.FindCommand;
 import medistock.command.HelpCommand;
+import medistock.command.HistoryCommand;
 import medistock.command.ListCommand;
 import medistock.command.RemoveExpiredCommand;
 import medistock.command.WithdrawCommand;
@@ -36,6 +37,8 @@ public class Parser {
             return prepareDeleteIndex(text);
         } else if (text.equals("list")) {
             return new ListCommand();
+        } else if (text.equals("history")) {
+            return new HistoryCommand();
         } else if (text.startsWith("exit") || text.startsWith("quit")) {
             return new ExitCommand();
         } else if (text.equals("find") || input.startsWith("find ")) {
