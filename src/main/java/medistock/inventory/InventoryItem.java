@@ -199,7 +199,6 @@ public class InventoryItem implements Storable {
         return descriptionLine + System.lineSeparator() + "[Batches]";
     }
 
-
     /**
      * Returns whether the current quantity is below the minimum threshold.
      *
@@ -235,10 +234,6 @@ public class InventoryItem implements Storable {
             }
         }
         return active;
-    }
-
-    public int getThreshold() {
-        return minimumThreshold;
     }
 }
 

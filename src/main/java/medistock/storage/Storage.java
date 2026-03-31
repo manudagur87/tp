@@ -42,11 +42,9 @@ public class Storage {
 
     public void saveToFile(Inventory inventory) throws IOException {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath.toFile(), false))) {
-
             for (InventoryItem item : inventory.getAllItems()) {
                 bw.write(item.toFileFormat());
                 bw.newLine();
-
                 for (Batch batch : item.getActiveBatches()) {
                     bw.write(batch.toFileFormat());
                     bw.newLine();
@@ -66,7 +64,6 @@ public class Storage {
             if (line.startsWith("Item:")) {
                 InventoryItem newItem = parseInventoryItem(line);
                 currentItemName = newItem.getName();
-
                 try {
                     inventory.addItem(newItem);
                 } catch (MediStockException e) {
@@ -84,30 +81,16 @@ public class Storage {
         }
     }
 
-
-
-    public String getItemName(String line) {
-        String[] name = splitLine(line);
-        return name[1];
-    }
-
-    public String[] splitLine(String line) {
-        return line.split("[|:]");
-    }
-
     public InventoryItem parseInventoryItem(String line) throws MediStockException {
         String regex = "Item: (.*?) \\((.*?)\\) \\| (\\d+)";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(line);
-
         if (!matcher.find()) {
             throw new MediStockException("Corrupted save file! Could not parse item from: " + line);
         }
-
         String name = matcher.group(1).trim();
         String unit = matcher.group(2).trim();
         int minThreshold = Integer.parseInt(matcher.group(3).trim());
-
         return new InventoryItem(name, unit, minThreshold);
     }
 
@@ -115,11 +98,9 @@ public class Storage {
         String regex = "^(\\d+) \\| (.*?) \\| (\\d{4}-\\d{2}-\\d{2})$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(line.trim());
-
         if (!matcher.matches()) {
             throw new MediStockException("Corrupted save file! Batch line does not match format: " + line);
         }
-
         try {
             int batchNumber = Integer.parseInt(matcher.group(1).trim());
             int quantity = Integer.parseInt(matcher.group(2).trim());
@@ -151,8 +132,3 @@ public class Storage {
         }
     }
 }
-
-
-
-
-
