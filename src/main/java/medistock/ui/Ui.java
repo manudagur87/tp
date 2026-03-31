@@ -214,6 +214,14 @@ public class Ui {
         printLine();
     }
 
+    public void printEdit(String oldName, InventoryItem updatedItem) {
+        printLine();
+        System.out.printf("Product updated: %s -> %s (%s)%n",
+                oldName, updatedItem.getName(), updatedItem.getUnit());
+        System.out.printf("Minimum threshold: %d%n", updatedItem.getMinimumThreshold());
+        printLine();
+    }
+
     public void printDelete(InventoryItem deletedItem) {
         printLine();
         System.out.printf("Product deleted:" + deletedItem.getName() + " (" + deletedItem.getUnit() + ")\n");
