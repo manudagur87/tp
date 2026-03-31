@@ -1,8 +1,0 @@
-Item: Paracetamol 500mg (Tablets) | 250
-[Batches]
-1 | 200 | 2028-06-07
-
-Item: Vyvanse 70mg (Tablets) | 250
-[Batches]
-1 | 150 | 2028-06-07
-
