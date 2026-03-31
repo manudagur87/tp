@@ -31,14 +31,10 @@ public class CreateCommand extends Command {
             inventory.addItem(item);
             storage.saveToFile(item);
             ui.printCreate(name, unit, minimumThreshold);
+            histories.add(toHistoryString());
         } catch (IOException e) {
             throw new MediStockException("Failed to save to file: " + e.getMessage());
         }
-
-        InventoryItem item = new InventoryItem(name, unit, minimumThreshold);
-        inventory.addItem(item);
-        ui.printCreate(name,unit,minimumThreshold);
-        histories.add(toHistoryString());
     }
 
     public String toHistoryString() {
