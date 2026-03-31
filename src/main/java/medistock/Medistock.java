@@ -58,7 +58,6 @@ public class Medistock {        // I think we need to change name of class and f
                 command.execute(inventory, ui, storage, histories);
                 if (input.equals("exit") || input.equals("quit")) {
                     isRunning = false;
-                    command.execute(inventory, ui, storage, histories);
                 }
             } catch (MediStockException e) {
                 ui.printError(e.getMessage());
