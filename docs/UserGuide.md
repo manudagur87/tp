@@ -35,18 +35,22 @@ date and stock health status.
 
     ```text
     ____________________________________________________________
-    Current Pharmaceutical Inventory: 
-    1. Paracetamol 500mg 
-          Total: 300 Tablets 
-          Earliest Exp: 2030-09-30
-          Status: Healthy
-  
-    2. Vyvanse 70mg
-          Total: 60 Tablets 
-          Earliest Exp: 2028-06-07
-          Status: Critical
+    Current Active Pharmaceutical Inventory:
+    1. Paracetamol 500mg (Min: 250)
+        Batch 1: 300 Tablets, Exp: 2030-09-30
+        Total: 300 Tablets
+        Status: Healthy
+
+    2. Vyvanse 70mg (Min: 50)
+        Batch 1: 60 Tablets, Exp: 2028-06-07
+        Total: 60 Tablets
+        Status: Critical
     ____________________________________________________________
-  ```
+    Current Expired Pharmaceutical Inventory:
+    3. Amoxicillin 250mg
+        Batch 1: 100 Capsules, Exp: 2024-01-15
+    ____________________________________________________________
+    ```
 
 ### Deleting a Pharmaceutical: `delete`
 Removes a task from your list permanently.
@@ -102,6 +106,35 @@ Withdraws a quantity of the keyed in medication from the database.
     ____________________________________________________________  
     ```
   
+### Removing Expired Batches: `remove-expired`
+Removes all expired batches from the inventory. Can target all items or a specific item by name.
+* **Format:** `remove-expired` or `remove-expired n/NAME`
+* **Example (all items):** `remove-expired`
+* **Example Output:**
+
+    ```text
+    ____________________________________________________________
+    Removed 3 expired batch(es) from all items.
+    ____________________________________________________________
+    ```
+
+* **Example (specific item):** `remove-expired n/Amoxicillin 250mg`
+* **Example Output:**
+
+    ```text
+    ____________________________________________________________
+    Removed 1 expired batch(es) from Amoxicillin 250mg.
+    ____________________________________________________________
+    ```
+
+* If no expired batches are found:
+
+    ```text
+    ____________________________________________________________
+    No expired batches found.
+    ____________________________________________________________
+    ```
+
 ### Quitting the Program: `exit`, `quit`
 Saves the inventory and safely exits from the application. <br>
 
@@ -140,6 +173,7 @@ The following table summarizes the available commands:
 | **DELETE ITEM**        | `delete n/NAME` or `delete i/INDEX`     | `delete n/Vyvanse u/70mg`            |
 | **ADD BATCH OF ITEMS** | `batch n/NAME q/QUANTITY d/EXPIRY_DATE` | `batch n/Vyvanse q/200 d/2028-06-07` |
 | **WITHDRAW ITEMS**     | `wtd n/NAME  q/QUANTITY`                | `wtd n/Vyvanse 70mg q/50`            |
+| **REMOVE EXPIRED**     | `remove-expired` or `remove-expired n/NAME` | `remove-expired n/Amoxicillin 250mg` |
 | **QUIT**               | `exit` or `quit`                        | `exit`                               |
 
 > **EXPIRY_DATE must** be formatted as **YYYY-MM-DD**. <br>
