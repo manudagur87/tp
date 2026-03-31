@@ -30,6 +30,8 @@ public class Medistock {        // I think we need to change name of class and f
      */
     public void boot() {
         ui.greet();
+        storage.initializeInventory(inventory);
+
         boolean isRunning = true;
 
         while (isRunning) {
