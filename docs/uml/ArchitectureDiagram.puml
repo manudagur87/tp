@@ -36,7 +36,7 @@ User --> Ui
 Ui --> Main
 Main --> Parser
 Parser --> Command
-Command --> Model
+Command --> "Inventory"
 Command --> Ui
 
 Main --> Storage

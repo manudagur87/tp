@@ -31,8 +31,20 @@ This developer guide was inspired by
 
 ## Design
 
-The Architecture Diagram below displays the high-level design of Medistock.
+The Architecture Diagram below shows the high-level design of Medistock.
 ![MedistockArchitectureDiagram](diagrams/MedistockArchitectureDiagram.png)
+
+How the architecture components interact:
+
+The sequence of interactions for a typical command, such as `withdraw n/paracetamol q/5`, is:
+
+1. `MediStock` reads the user input from the command line.
+2. `MediStock` passes the raw input to the `Parser` for interpretation.
+3. The `Parser` validates the format and returns the appropriate `Command` object.
+4. `MediStock` executes the `Command`.
+5. The `Command` interacts with `Inventory` to read or modify the in-memory data.
+6. The `Command` uses `Ui` to display the success message, error message, or requested output.
+7. If the command changes the inventory, `Storage` saves the updated data to file.
 
 ## Implementation
 
