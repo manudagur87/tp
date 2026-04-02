@@ -54,6 +54,43 @@ The sequence of interactions for a typical command, such as `withdraw n/paraceta
 
 ### Feature: Create Item
 
+**Purpose:** Create a new item in the inventory with its name, unit, and minimum threshold.
+
+**Command word:** `create`
+
+**Format:**
+```
+create n/<name> u/<unit> min/<threshold>
+```
+
+Creates a new `InventoryItem` using the specified name, unit, and minimum threshold, then adds it to the inventory for future batch tracking.
+The created item does not contain any batches yet; stock is added later through the `batch` command.
+
+**Behaviour:**
+1. Parses the user input to extract the item name, unit, and minimum threshold.
+2. Validates that `n/`, `u/`, and `min/` are present and that they appear in the correct order.
+3. Validates that name, unit, and minimum threshold are not empty.
+4. Parses the minimum threshold as a positive integer.
+5. Creates a `CreateCommand` with the validated values.
+6. Creates a new `InventoryItem` with the specified metadata and no batches, then calls `inventory.addItem(item)` to add it to the inventory.
+7. `inventory.addItem(item)` checks that another item with the same normalized name does not already exist.
+8. Calls `storage.saveToFile(item)` to append the new item to storage.
+9. Calls `ui.printCreate(name, unit, minimumThreshold)` to display the created item details.
+10. Records the creation in the command history.
+
+**Failure cases & messages:**
+- If `n/`, `u/`, or `min/` is missing: "Invalid create format. Format: create n/NAME u/UNIT min/THRESHOLD"
+- If the argument order is invalid: "Use create format: Format: create n/NAME u/UNIT min/THRESHOLD"
+- If name, unit, or minimum threshold is empty: "Name, unit, and minimum threshold must not be empty."
+- If the minimum threshold is not a valid number: "Minimum threshold must be a valid number."
+- If the minimum threshold is zero or negative: "Minimum threshold must be greater than 0."
+- If the item already exists in inventory: "Product already exists: \<name\>"
+- If saving to file fails: "Failed to save to file: \<message\>"
+
+**Logging:**
+- WARNING when attempting to add a duplicate item.
+- INFO on successful item creation.
+
 ### Feature: Edit Item
 
 ![EditCommand_SequenceDiagram](diagrams/EditCommandSequenceDiagram.png)
