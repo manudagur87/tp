@@ -46,6 +46,8 @@ Edits an existing medication entry. You can update its name, unit, minimum thres
     ____________________________________________________________
     ```
 
+    
+
 ### Listing the Inventory: `list`
 Shows all active and expired inventory items, together with their batch information and stock status.
 
@@ -70,6 +72,8 @@ Shows all active and expired inventory items, together with their batch informat
         Batch 1: 100 Capsules, Exp: 2024-01-15
     ____________________________________________________________
     ```
+
+<div style="page-break-after: always;"></div>
 
 ### Viewing Command History: `history`
 Lists the history of changes in the inventory which includes `create`, `batch`, `withdraw` and `delete`.
