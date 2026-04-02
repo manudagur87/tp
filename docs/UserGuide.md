@@ -29,6 +29,8 @@ Creates a new medication entry so its stock can be tracked.
     Minimum threshold: 250
     ____________________________________________________________
     ```
+    
+<div style="page-break-after: always;"></div>
 
 ### Editing a Medication: `edit`
 Edits an existing medication entry. You can update its name, unit, minimum threshold, or any combination of these.
@@ -41,6 +43,66 @@ Edits an existing medication entry. You can update its name, unit, minimum thres
     ____________________________________________________________
     Product updated: Paracetamol 500mg -> Paracetamol 650mg (Tablets)
     Minimum threshold: 250
+    ____________________________________________________________
+    ```
+
+### Listing the Inventory: `list`
+Shows all active and expired inventory items, together with their batch information and stock status.
+
+* **Format:** `list`
+* **Example Output:**
+
+    ```text
+    ____________________________________________________________
+    Current Active Pharmaceutical Inventory:
+    1. Paracetamol 500mg (Min: 250)
+        Batch 1: 300 Tablets, Exp: 2030-09-30
+        Total: 300 Tablets
+        Status: Healthy
+
+    2. Vyvanse 70mg (Min: 50)
+        Batch 1: 60 Tablets, Exp: 2028-06-07
+        Total: 60 Tablets
+        Status: Critical
+    ____________________________________________________________
+    Current Expired Pharmaceutical Inventory:
+    3. Amoxicillin 250mg
+        Batch 1: 100 Capsules, Exp: 2024-01-15
+    ____________________________________________________________
+    ```
+
+### Viewing Command History: `history`
+Lists the history of changes in the inventory which includes `create`, `batch`, `withdraw` and `delete`.
+* **Format:** `history`
+* **Example Output:**
+
+    ```text
+    ____________________________________________________________
+    History of Stocks:
+    1. Created 'Vyvanse 70mg' of 'tablets' unit with minimum threshold of 10.
+    2. Added a batch of 200 tablets of Vyvanse 70mg with expiry date 2028-06-07.
+    3. Withdrawn 50 tablets of 'Vyvanse 70mg'.
+    4. Deleted 'Vyvanse 70mg'.
+    ____________________________________________________________
+    ```
+    
+<div style="page-break-after: always;"></div>
+
+### Finding a Medication: `find`
+Shows medications whose names contain the given keyword.
+
+* **Format:** `find KEYWORD`
+* **Example:** `find Paracetamol`
+* **Example Output:**
+
+    ```text
+    ____________________________________________________________
+    Here are the matching items in your inventory:
+    1. Paracetamol 500mg (Min: 250)
+        Active Batches:
+            Batch 1: 200 Tablets, Exp: 2028-06-07
+        Total (active): 200 Tablets
+        Status: Critical
     ____________________________________________________________
     ```
 
@@ -67,11 +129,6 @@ Removes an entire Medication Class from the inventory permanently.
     Current Expired Pharmaceutical Inventory:
     No expired batches found.
     ____________________________________________________________
-    delete n/Vyvanse 70mg
-    ____________________________________________________________
-    Product deleted: Vyvanse 70mg
-    ____________________________________________________________
-    ```
 
 ### Adding a Batch: `batch`
 Adds a batch to an existing medication entry.
@@ -114,63 +171,6 @@ Withdraws a quantity from an existing medication entry.
     ```text
     ____________________________________________________________
     Insufficient stock for Paracetamol 500mg. Available: 0, Requested: 50
-    ____________________________________________________________
-    ```
-  
-### Listing the Inventory: `list`
-Shows all active and expired inventory items, together with their batch information and stock status.
-* **Format:** `list`
-* **Example Output:**
-
-    ```text
-    ____________________________________________________________
-    Current Active Pharmaceutical Inventory:
-    1. Paracetamol 500mg (Min: 250)
-        Batch 1: 300 Tablets, Exp: 2030-09-30
-        Total: 300 Tablets
-        Status: Healthy
-
-    2. Vyvanse 70mg (Min: 50)
-        Batch 1: 60 Tablets, Exp: 2028-06-07
-        Total: 60 Tablets
-        Status: Critical
-    ____________________________________________________________
-    Current Expired Pharmaceutical Inventory:
-    3. Amoxicillin 250mg
-        Batch 1: 100 Capsules, Exp: 2024-01-15
-    ____________________________________________________________
-    ```
-
-### Listing the History of Inventory: `history`
-Lists the history of changes in the inventory which includes `create`, `batch`, `withdraw` and `delete`.
-* **Format:** `history`
-* **Example Output:**
-
-    ```text
-    ____________________________________________________________
-    History of Stocks:
-    1. Created 'Vyvanse 70mg' of 'tablets' unit with minimum threshold of 10.
-    2. Added a batch of 200 tablets of Vyvanse 70mg with expiry date 2028-06-07.
-    3. Withdrawn 50 tablets of 'Vyvanse 70mg'.
-    4. Deleted 'Vyvanse 70mg'.
-    ____________________________________________________________
-    ```
-  
-### Finding a Medication: `find`
-Shows medications whose names contain the given keyword.
-
-* **Format:** `find KEYWORD`
-* **Example:** `find Paracetamol`
-* **Example Output:**
-
-    ```text
-    ____________________________________________________________
-    Here are the matching items in your inventory:
-    1. Paracetamol 500mg (Min: 250)
-        Active Batches:
-            Batch 1: 200 Tablets, Exp: 2028-06-07
-        Total (active): 200 Tablets
-        Status: Critical
     ____________________________________________________________
     ```
 
@@ -265,7 +265,7 @@ If the file format is edited incorrectly, MediStock may fail to load the stored 
 
 ## Known Issues
 - NIL
-
+<div style="page-break-after: always;"></div>
 ### Command Summary
 The following table summarizes the available commands:
 
