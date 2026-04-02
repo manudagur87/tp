@@ -17,14 +17,25 @@
 > **Dosage** should be included in **NAME**. *(if applicable)*
 
 ### Creating a new Medication Class: `create`
-Creates a new medication product in the database to be monitored.
+Creates a new medication entry in the inventory so its stock can be tracked.
 * **Format:** `create n/NAME u/UNIT min/THRESHOLD`
 * **Example:** `create n/Paracetamol 500mg u/Tablets min/250`
 * **Example Output:**
+	
+    ```text
+    Product created: Paracetamol 500mg (Tablets)
+    Minimum threshold: 250
+    ```
+
+### Editing a Medication Class: `edit`
+Edits an existing medication entry in the inventory. You can update its name, unit, minimum threshold, or any combination of these.
+* **Format:** `edit o/OLD_NAME [n/NEW_NAME] [u/NEW_UNIT] [min/NEW_THRESHOLD]`
+* **Example:** `edit o/Paracetamol 500mg n/Paracetamol 650mg`
+* **Example Output:**
 
     ```text
-    Product created: Paracetamol 500mg (tablets)
-    Minimum threshold: 500
+    Product updated: Paracetamol 500mg -> Paracetamol 650mg (Tablets)
+    Minimum threshold: 250
     ```
   
 ### Listing all Medications: `list`
