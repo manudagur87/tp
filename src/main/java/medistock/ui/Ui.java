@@ -367,11 +367,12 @@ public class Ui {
         System.out.println("Available commands:");
         System.out.println("1. list");
         System.out.println("2. create " + CREATE_FORMAT);
-        System.out.println("3. delete " + DELETE_FORMAT);
-        System.out.println("4. batch " + BATCH_FORMAT);
-        System.out.println("5. withdraw " + WITHDRAW_FORMAT);
-        System.out.println("6. find " + FIND_FORMAT);
-        System.out.println("6. exit");
+        System.out.println("3. edit " + EDIT_FORMAT);
+        System.out.println("4. delete " + DELETE_FORMAT);
+        System.out.println("5. batch " + BATCH_FORMAT);
+        System.out.println("6. withdraw " + WITHDRAW_FORMAT);
+        System.out.println("7. find " + FIND_FORMAT);
+        System.out.println("8. exit");
         printLine();
     }
 }
