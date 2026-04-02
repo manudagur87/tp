@@ -1,13 +1,8 @@
-# About us
+# About Us
 
-Display |   Name   |            Github Profile             | Portfolio 
---------|:--------:|:-------------------------------------:|:---------:
-![]() | Tan Pang | [Github](https://github.com/Tan-Pang) | [Portfolio](docs/team/Tanpang.md)
-
-Display |      Name      |            Github Profile            | Portfolio 
---------|:--------------:|:------------------------------------:|:---------:
-![]() | Suwei Shrestha | [Github](https://github.com/Suwei02) | [Portfolio](docs/team/Suwei.md)
-
-Display |      Name       |            Github Profile            | Portfolio 
---------|:---------------:|:------------------------------------:|:-------------------------:
-![]() | Ayden van Etten | [Github](https://github.com/podledges) | [Portfolio](docs/team/Ayden.md)
+| Display | Name | GitHub Profile | Portfolio |
+| ![]() | Manu Dagur | [GitHub](https://github.com/manudagur87) | [Portfolio](team/manudagur87.md) |
+| ![]() | Tan Pang | [GitHub](https://github.com/Tan-Pang) | [Portfolio](team/Tanpang.md) |
+| ![]() | Suwei Shrestha | [GitHub](https://github.com/Suwei02) | [Portfolio](team/suwei02.md) |
+| ![]() | Ayden van Etten | [GitHub](https://github.com/podledges) | [Portfolio](team/Ayden.md) |
+| ![]() | Yonish | [GitHub](https://github.com/Yonish18) | [Portfolio](team/Yonish18.md) |
