@@ -409,7 +409,7 @@ Prints an enumerated list of all available commands with their syntax formats.
 
 ### Feature: Exit Command
 
-![ExitCommand_SequenceDiagram](diagrams/HelpCommand_SequenceDiagram.png)
+![ExitCommand_SequenceDiagram](diagrams/ExitCommand_SequenceDiagram.png)
 
 **Purpose:** Gracefully terminate the MediStock application.
 
@@ -435,8 +435,24 @@ Displays a farewell message and terminates the application.
 
 
 ### Feature: Data Storage
+![Storage_ClassDiagram](diagrams/Storage_ClassDiagram.png) <br> <br>
+**Purpose:** Responsible for persisting the state of the `Inventory` to a local text file, and loading it back into memory upon
+application startup <br>
 
-
+**Behaviour** 
+* ***Appending Single Entries:*** When a command only adds new data such as adding a new `InventoryItem` or a single `Batch`,
+the `saveToFile(Storable data)` method is invoked, since both `InventoryItem` and `Batch` implements the `storable`
+interface, this method polymorphically calls `data.toFileFormat()` and simply appends the resulting formatted string to
+the end of the existing text file, appropriately. 
+* ***Full Inventory Overwrites:*** When a command modifies existing data or removes item (i.e `withdraw` or `delete`) the
+text file completely updates itself to reflect the new state. It does so vie the `saveToFile(Inventory inventory) method`
+which iterates through the entire `Inventory`, retrieving every `InventoryItem` and looping through all of its associated 
+`Batch` objects. It calls `toFileFormat()` on each entity and completely overwrites the text file from top to bottom. 
+This ensures that the saved data perfectly mirrors the current state in memory. 
+* ***Loading Data:*** Upon initialization, `MediStock` calls `initializeInventory()`. If a save file exists, it proceeds to
+read the file line by line. The `Storage` class utilizes Regular Expressions to parse the text strings back into distinct
+`InventoryItem` and `Batch` objects. It relies on the fixed ordering of the saved date to correctly reconstruct the
+hierarchical inventory structure in memory. 
 
 ## Product scope
 ### Target user profile
