@@ -359,7 +359,9 @@ public class Ui {
         System.out.println("5. batch " + BATCH_FORMAT);
         System.out.println("6. withdraw " + WITHDRAW_FORMAT);
         System.out.println("7. find " + FIND_FORMAT);
-        System.out.println("8. exit");
+        System.out.println("8. remove-expired " + REMOVE_EXPIRED_FORMAT);
+        System.out.println("9. history");
+        System.out.println("10. exit");
         printLine();
     }
 }
