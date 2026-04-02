@@ -29,6 +29,7 @@ Creates a new medication entry so its stock can be tracked.
     Minimum threshold: 250
     ____________________________________________________________
     ```
+<div style="page-break-after: always;"></div>
 
 ### Editing a Medication: `edit`
 Edits an existing medication entry. You can update its name, unit, minimum threshold, or any combination of these.
@@ -68,6 +69,7 @@ Shows all active and expired inventory items, together with their batch informat
         Batch 1: 100 Capsules, Exp: 2024-01-15
     ____________________________________________________________
     ```
+<div style="page-break-after: always;"></div>
 
 ### Finding a Medication: `find`
 Shows medications whose names contain the given keyword.
@@ -119,6 +121,7 @@ Adds a batch to an existing medication entry.
         Status: Critical
     ____________________________________________________________
     ```
+    <div style="page-break-after: always;"></div>
 
 ### Withdrawing Medication: `withdraw`
 Withdraws a quantity from an existing medication entry.
@@ -160,6 +163,7 @@ Shows the previously recorded stock-related commands.
     5. Withdrawn 50 Tablets of 'Vyvanse 70mg'.
     ____________________________________________________________
     ```
+<div style="page-break-after: always;"></div>
 
 ### Removing Expired Batches: `remove-expired`
 Removes expired batches from all items or from a specific medication.
@@ -212,6 +216,7 @@ Shows the built-in list of available commands.
     10. exit
     ____________________________________________________________
     ```
+<div style="page-break-after: always;"></div>
 
 ### Exiting the Program: `exit`, `quit`
 Saves the inventory and exits the application.
