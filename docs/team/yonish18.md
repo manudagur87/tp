@@ -2,7 +2,7 @@
 
 ## Overview
 
-MediStock is a CLI-based inventory management application for pharmacists and clinical staff to track medicines, batches, expiry dates, and stock levels. It is designed for users who prefer fast keyboard-driven workflows over GUI-based inventory systems.
+MediStock is a CLI-based inventory management application for pharmacists and clinical staff to track medicines, batches, expiry dates, and stock levels. It is designed for experienced users who prefer fast keyboard-driven workflows over GUI-based inventory systems.
 
 My main contributions to MediStock were the `create` and `edit` commands, together with some of the early command architecture that connects user input to command execution in the main application loop. In particular, I contributed to the parser-command flow, the base `Command` abstraction, the initial inventory structure using `HashMap` storage, and the later `edit` feature across parsing, command execution, persistence, UI output, tests, and documentation.
 
