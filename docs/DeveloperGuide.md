@@ -54,6 +54,8 @@ The sequence of interactions for a typical command, such as `withdraw n/paraceta
 
 ### Feature: Create Item
 
+{UML diagrams to be implemented}
+
 **Purpose:** Create a new item in the inventory with its name, unit, and minimum threshold.
 
 **Command word:** `create`
@@ -152,17 +154,16 @@ Finally, it updates the storage file and command history.
 2. Validates that all prefixes `(n/, q/, d/)` are present and in the correct sequential order.
 3. Ensures the quantity is a positive integer. and expiry date matches the `YYYY-MM-DD` format
 4. Instantiates a new `BatchCommand` with the extracted parameters
-5. Calls `BatchCommand.executre()`, which also checks if the item exists in the inventory.
+5. Calls `BatchCommand.execute()`, which also checks if the item exists in the inventory.
 6. Calls `item.sortAndMarkExpiredBatches()` to organize the item's current stock
-7. Calculates the new batch number and instanties the `Batch` object
+7. Calculates the new batch number and instantiates the `Batch` object
 8. Calls `item.addBatch(newBatch)` to attach it to the inventory item
-9. Calls `ui.printBatch()` to display the success mesage and updated stock details
-10. Records the addition in the command history and saves the new batch to storage via `storage.savetoFile()`.
+9. Calls `ui.printBatch()` to display the success message and updated stock details
+10. Records the addition in the command history and saves the new batch to storage via `storage.saveToFile()`.
 
 **Failure cases & messages:**
 - If any prefix is missing: "Invalid batch format. Format: batch n/NAME q/QUANTITY d/EXPIRY_DATE(YYYY-MM-DD)"
 - If prefixes are out of order: "Ensure the arguments are in the correct order:"
-- If quantity is not a number or is empty: "Invalid Quantity. Please enter a positive whole number for the quantity"
 - If quantity is not a number or is empty: "Invalid quantity. Please enter a positive whole number for the quantity"
 - If expiry data format is incorrect: "Invalid expiry date. Please use a valid format (e.g., YYYY-MM-DD)."
 ### Feature: Withdraw Stock
@@ -488,7 +489,7 @@ which iterates through the entire `Inventory`, retrieving every `InventoryItem` 
 This ensures that the saved data perfectly mirrors the current state in memory. 
 * ***Loading Data:*** Upon initialization, `MediStock` calls `initializeInventory()`. If a save file exists, it proceeds to
 read the file line by line. The `Storage` class utilizes Regular Expressions to parse the text strings back into distinct
-`InventoryItem` and `Batch` objects. It relies on the fixed ordering of the saved date to correctly reconstruct the
+`InventoryItem` and `Batch` objects. It relies on the fixed ordering of the saved data to correctly reconstruct the
 hierarchical inventory structure in memory. 
 
 ## Product scope
@@ -543,7 +544,10 @@ simplifies stock-taking, and helps maintain minimum stock thresholds so that cri
 * *Minimum threshold* - The minimum quantity set for an inventory item, used to determine whether the item should be flagged as low stock.
 * *Expired batch* - A batch whose expiry date is earlier than the current date and should no longer be dispensed.
 * *Active batch* - A batch that has not expired and can still contribute to the available stock of an inventory item.
+* *Command history* - The locally stored record of commands executed by the user, used to review past actions across sessions.
+
 
 ## Instructions for manual testing
 
 {Give instructions on how to do a manual product testing e.g., how to load sample data to be used for testing}
+{To be implemented}
