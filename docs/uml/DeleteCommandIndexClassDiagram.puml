@@ -1,0 +1,42 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide circle
+
+title DeleteCommandIndex Class Diagram
+
+abstract class "<<abstract>>\nCommand" as Command {
+    + execute(inventory: Inventory, ui: Ui, storage: Storage, histories: List<String>)
+}
+
+class DeleteCommandIndex {
+    - index: int
+    + toHistoryString(name: String): String
+}
+
+class Inventory {
+    + deleteItem(index: int): InventoryItem
+}
+
+class InventoryItem {
+    - name: String
+    - unit: String
+    - minimumThreshold: int
+    - batchQuantity: int
+    - batches: List<Batch>
+}
+
+class Ui {
+    + printDelete(deletedItem: InventoryItem)
+}
+
+DeleteCommandIndex -|> Command
+
+DeleteCommandIndex ..> Inventory
+DeleteCommandIndex ..> Ui
+
+Ui .> Inventory
+Ui .> InventoryItem
+
+Inventory "1" -> "*" InventoryItem : stores >
+
+@enduml

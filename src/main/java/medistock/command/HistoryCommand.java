@@ -14,6 +14,7 @@ public class HistoryCommand extends Command {
      *
      * @param inventory The inventory to display.
      * @param ui The UI for displaying the inventory.
+     * @param histories The History of stock activities.
      * @throws MediStockException If an error occurs during execution.
      */
 

@@ -7,51 +7,55 @@ participant ":Ui" as Ui
 participant ":Parser" as Parser
 participant ":DeleteCommandName" as DeleteCommandName
 participant ":Inventory" as Inventory
-participant ":Map" as Map
+participant ":Storage" as Storage
+participant ":HistoryStorage" as HistoryStorage
 
 User -> App : run "delete n/<name>"
 activate App
 
 App -> Ui : getInput()
 activate Ui
-Ui --> App : input:String
+Ui --> App : input: String
 deactivate Ui
 
-App -> Parser : parseCommand(input:String)
+App -> Parser : parseCommand(input: String)
 activate Parser
 
 create DeleteCommandName
-Parser -> DeleteCommandName : new DeleteCommandName(name:String)
+Parser -> DeleteCommandName : new DeleteCommandName(name: String)
 activate DeleteCommandName
-DeleteCommandName --> Parser : command:DeleteCommandName
+DeleteCommandName --> Parser : command: DeleteCommandName
 deactivate DeleteCommandName
 
 Parser --> App : command:DeleteCommandName
 deactivate Parser
 
-App -> DeleteCommandName : execute(inventory:Inventory, ui:Ui)
+App -> DeleteCommandName : execute(inventory: Inventory, ui: Ui)
 activate DeleteCommandName
 
-DeleteCommandName -> Inventory : deleteItem(name:String)
+DeleteCommandName -> Inventory : deleteItem(name: String)
 activate Inventory
 
-Inventory -> Map : get(key:String)
-activate Map
-Map --> Inventory : deletedItem : InventoryItem
-deactivate Map
-Inventory -> Map : remove(key:String)
-activate Map
-deactivate Map
-Inventory --> DeleteCommandName : deletedItem : InventoryItem
+Inventory --> DeleteCommandName : deletedItem: InventoryItem
 deactivate Inventory
 
-DeleteCommandName -> Ui : printDelete(deletedItem:InventoryItem)
+DeleteCommandName -> Ui : printDelete(deletedItem: InventoryItem)
 activate Ui
 Ui --> DeleteCommandName : return
 deactivate Ui
 
+DeleteCommandName -> Storage : saveToFile(inventory)
+activate Storage
+Storage --> DeleteCommandName : return
+deactivate Storage
+
 DeleteCommandName --> App : return
 deactivate DeleteCommandName
+
+App -> HistoryStorage : save(histories)
+activate HistoryStorage
+HistoryStorage --> App : return
+deactivate HistoryStorage
 
 App --> User : Item deleted
 deactivate App

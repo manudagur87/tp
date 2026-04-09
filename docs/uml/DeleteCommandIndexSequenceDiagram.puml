@@ -7,7 +7,8 @@ participant ":Ui" as Ui
 participant ":Parser" as Parser
 participant ":DeleteCommandIndex" as DeleteCommandIndex
 participant ":Inventory" as Inventory
-participant ":Map" as Map
+participant ":Storage" as Storage
+participant ":HistoryStorage" as HistoryStorage
 
 User -> App : run "delete i/<index>"
 activate App
@@ -35,19 +36,8 @@ activate DeleteCommandIndex
 DeleteCommandIndex -> Inventory : deleteItem(index:int)
 activate Inventory
 
-Inventory -> Map : keySet()
-activate Map
-Map --> Inventory : keys : Collection
-deactivate Map
 loop for key in keys
     alt i == index - 1
-        Inventory -> Map : get(key:String)
-        activate Map
-        Map --> Inventory : deletedItem : InventoryItem
-        deactivate Map
-        Inventory -> Map : remove(key:String)
-        activate Map
-        deactivate Map
         Inventory --> DeleteCommandIndex : deletedItem : InventoryItem
         deactivate Inventory
     end
@@ -59,8 +49,18 @@ activate Ui
 Ui --> DeleteCommandIndex : return
 deactivate Ui
 
+DeleteCommandIndex -> Storage : saveToFile(inventory)
+activate Storage
+Storage --> DeleteCommandIndex : return
+deactivate Storage
+
 DeleteCommandIndex --> App : return
 deactivate DeleteCommandIndex
+
+App -> HistoryStorage : save(histories)
+activate HistoryStorage
+HistoryStorage --> App : return
+deactivate HistoryStorage
 
 App --> User : Item deleted
 deactivate App
