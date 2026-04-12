@@ -34,13 +34,22 @@ public class BatchCommand extends Command {
         try {
             InventoryItem item = inventory.getItem(name);
             item.sortAndMarkExpiredBatches();
-            int batchNumber = item.getTotalBatchQuantity() + 1;
+            int batchNumber = item.getAndIncrementBatchNumber();
+            if (expiryDate.isBefore(LocalDate.now())) {
+                String errorMessage = "This batch is already expired (" + expiryDate + ").";
+                if (!ui.wasMessageConfirm(errorMessage)) {
+                    System.out.println("Batch not added.");
+                    ui.printAbortCommand();
+                    return;
+                }
+            }
             Batch newBatch = new Batch(batchNumber, quantity, expiryDate);
             item.addBatch(newBatch);
+            item.sortAndMarkExpiredBatches();
             ui.printBatch(inventory, item, quantity, expiryDate);
             histories.add(toHistoryString(item.getUnit()));
 
-            storage.saveToFile(newBatch);
+            storage.saveToFile(inventory);
         } catch (IOException e) {
             throw new MediStockException("Failed to save to file: " + e.getMessage());
         }

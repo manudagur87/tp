@@ -53,7 +53,7 @@ public class Medistock {
                 String input = ui.getInput();
                 Command command = Parser.parseCommand(input);
                 command.execute(inventory, ui, storage, histories);
-                if (input.equals("exit") || input.equals("quit")) {
+                if (command.isExit()) {
                     isRunning = false;
                 }
             } catch (MediStockException e) {

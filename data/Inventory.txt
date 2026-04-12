@@ -1,0 +1,10 @@
+Item: Tylenol (Tablets) | 250
+[Batches]
+
+Item: TestMed2 (Tabs) | 10
+[Batches]
+
+Item: ibuprofen (tablets) | 200
+[Batches]
+3 | 50 | 2026-12-12
+

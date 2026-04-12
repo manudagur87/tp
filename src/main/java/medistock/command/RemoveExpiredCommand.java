@@ -26,6 +26,7 @@ public class RemoveExpiredCommand extends Command {
         if (name == null) {
             int count = inventory.removeAllExpiredBatches();
             ui.printRemoveExpired(count);
+            storage.saveToFile(inventory);
         } else {
             if (!inventory.hasItem(name)) {
                 throw new MediStockException(

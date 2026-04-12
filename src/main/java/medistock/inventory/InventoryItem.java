@@ -18,6 +18,7 @@ public class InventoryItem implements Storable {
     private final String unit;
     private final int minimumThreshold;
     private final List<Batch> batches;
+    private int nextBatchNumber = 1;
 
     /**
      * Creates an inventory item with the specified name, unit, and minimum
@@ -68,7 +69,9 @@ public class InventoryItem implements Storable {
         }
         return count;
     }
-
+    public int getAndIncrementBatchNumber() {
+        return nextBatchNumber++;
+    }
     public int getTotalBatchQuantity() {
         return batches.size();
     }
@@ -126,6 +129,10 @@ public class InventoryItem implements Storable {
      */
     public void addBatch(Batch batch) {
         batches.add(batch);
+
+        if (batch.getBatchNumber() >= nextBatchNumber) {
+            nextBatchNumber = batch.getBatchNumber() + 1;
+        }
     }
 
     public InventoryItem copyWithMetadata(String name, String unit, int minimumThreshold) {
