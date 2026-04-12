@@ -70,9 +70,8 @@ public class Ui {
 
 
     /**
-     * Displays a confirmation prompt to the user with the given message and
-     * repeatedly reads input until a valid response is received.
-     * Can be used anywhere a y/n confirmation is required before proceeding.
+     * Displays a confirmation prompt to the user with the given message.
+     * User input is polled for a y/n confirmation to the message, before proceeding.
      *
      * @param message The context message to display before the confirmation prompt.
      *                Should describe the action or warning requiring confirmation.
@@ -83,7 +82,6 @@ public class Ui {
         System.out.println(errorStr);
 
         if (scanner.hasNextLine() && System.in.available() == 0) {
-            // safer: just do a preemptive nextLine() drain if needed
         }
 
         while (true) {
@@ -373,7 +371,7 @@ public class Ui {
 
         String itemName = item.getName();
 
-        System.out.printf("Batch of %d %s, expiring on %3$tF %n has been successfully to" +
+        System.out.printf("Batch of %d %s, expiring on %3$tF %n has been successfully added to" +
                 " the inventory!%n", quantity, itemName, date);
         printLine();
         System.out.println(String.format("Stock of %s is now:", itemName));

@@ -8,3 +8,6 @@ Item: ibuprofen (tablets) | 200
 [Batches]
 3 | 50 | 2026-12-12
 
+Item: Paracetamol 500mg (Tablets) | 250
+[Batches]
+

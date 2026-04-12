@@ -3,8 +3,8 @@ package medistock.inventory;
 import medistock.exception.MediStockException;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -28,7 +28,7 @@ public class Inventory {
      * Constructs an empty Inventory.
      */
     public Inventory() {
-        this.items = new HashMap<>();
+        this.items = new LinkedHashMap<>();
     }
 
     /**

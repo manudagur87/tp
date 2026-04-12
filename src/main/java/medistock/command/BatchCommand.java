@@ -27,9 +27,13 @@ public class BatchCommand extends Command {
 
     @Override
     public void execute(Inventory inventory, Ui ui, Storage storage, List<String> histories) throws MediStockException {
+        if (this.name == null || this.name.trim().isEmpty()) {
+            throw new MediStockException("Item name cannot be empty.\n"
+                    + "Format: batch n/NAME q/QUANTITY d/EXPIRY_DATE(YYYY-MM-DD)");
+        }
         if (!inventory.hasItem(this.name)) {
-            throw new MediStockException("Item '" + this.name + "' does not exist in inventory." +
-                    " Please add the item first.");
+            throw new MediStockException("Item '" + this.name + "' does not exist in inventory.\n"
+                    + "Use 'list' to see existing items, or 'create' to add a new one.");
         }
         try {
             InventoryItem item = inventory.getItem(name);
