@@ -366,6 +366,45 @@ Searches all inventory items for names containing the specified keyword (case-in
 - INFO on command entry/exit with keyword
 - FINE for search result count
 
+### Feature: List History
+
+![HistoryCommand_ClassDiagram](diagrams/HistoryCommand_ClassDiagram.png)
+![HistoryCommand_SequenceDiagram](diagrams/HistoryCommand_SequenceDiagram.png)
+
+**Purpose:** Display previous changes (ie `create`, `batch`, `withdraw`, `delete`, `remove-expired`) to the inventory in a sequential manner.
+
+**Command word:** `history`
+
+**Format:**
+```
+history
+```
+
+Prints a comprehensive view of the entire history of changes to the inventory.
+
+Each change displays:
+- Index number (1-based enumeration)
+- Command entered
+- Name of stock
+- Relevant information of each change according to the list below:
+  1. `create`: unit and minimum threshold of stock
+  2. `batch`: quantity of stock added and expiry date of added batch
+  3. `withdraw`: quantity of stock withdrawn
+  4. `remove-expired`:
+
+If the history is empty, prints "Currently no history recorded."
+
+**Behaviour:**
+1. Checks if history size is 0; if so, displays empty message
+2. Iterates through `histories`
+3. Displays the custom string for each of the change with the relevant information
+
+**Failure cases & messages:**
+- If inventory is empty: "Currently no history recorded."
+
+**Logging:**
+- INFO on command entry/exit
+
 ### Feature: Remove Expired Batches
 
 ![RemoveExpiredCommand_SequenceDiagram](diagrams/RemoveExpiredCommandSequenceDiagram.png)
