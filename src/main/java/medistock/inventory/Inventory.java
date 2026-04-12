@@ -116,6 +116,12 @@ public class Inventory {
         int updatedMinimumThreshold = newMinimumThreshold == null
                 ? currentItem.getMinimumThreshold() : newMinimumThreshold;
 
+        if (currentItem.getName().equals(updatedName)
+                && currentItem.getUnit().equals(updatedUnit)
+                && currentItem.getMinimumThreshold() == updatedMinimumThreshold) {
+            throw new MediStockException("No changes made to product: " + currentItem.getName());
+        }
+
         String oldKey = normalizeName(currentItem.getName());
         String newKey = normalizeName(updatedName);
 

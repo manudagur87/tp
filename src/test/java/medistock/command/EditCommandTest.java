@@ -106,6 +106,44 @@ public class EditCommandTest {
     }
 
     @Test
+    void execute_noChanges_throwsExceptionAndDoesNotLogHistory() throws MediStockException {
+        Inventory inventory = new Inventory();
+        Ui ui = new Ui();
+        Storage storage = new Storage(tempDir.resolve("Inventory.txt"));
+        List<String> histories = new ArrayList<>();
+        InventoryItem item = new InventoryItem("Aspirin", "Tablets", 10);
+        inventory.addItem(item);
+
+        EditCommand command = new EditCommand("Aspirin", "Aspirin", "Tablets", 10);
+
+        assertThrows(MediStockException.class,
+                () -> command.execute(inventory, ui, storage, histories));
+        InventoryItem unchangedItem = inventory.getItem("Aspirin");
+        assertEquals("Tablets", unchangedItem.getUnit());
+        assertEquals(10, unchangedItem.getMinimumThreshold());
+        assertEquals(0, histories.size());
+    }
+
+    @Test
+    void execute_sameUnitOnly_throwsExceptionAndDoesNotLogHistory() throws MediStockException {
+        Inventory inventory = new Inventory();
+        Ui ui = new Ui();
+        Storage storage = new Storage(tempDir.resolve("Inventory.txt"));
+        List<String> histories = new ArrayList<>();
+        InventoryItem item = new InventoryItem("Aspirin", "Tablets", 10);
+        inventory.addItem(item);
+
+        EditCommand command = new EditCommand("Aspirin", null, "Tablets", null);
+
+        assertThrows(MediStockException.class,
+                () -> command.execute(inventory, ui, storage, histories));
+        InventoryItem unchangedItem = inventory.getItem("Aspirin");
+        assertEquals("Tablets", unchangedItem.getUnit());
+        assertEquals(10, unchangedItem.getMinimumThreshold());
+        assertEquals(0, histories.size());
+    }
+
+    @Test
     void execute_renameToSameNormalizedName_succeeds() throws MediStockException {
         Inventory inventory = new Inventory();
         Ui ui = new Ui();

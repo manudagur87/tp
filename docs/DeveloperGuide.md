@@ -119,11 +119,12 @@ Finds the specified item using its current name, applies the requested updates, 
 1. Parses the user input to extract the old item name and the fields to update.
 2. Validates that `o/` is present and that at least one of `n/`, `u/`, or `min/` is provided.
 3. Calls `inventory.editItem(...)` to retrieve the current `InventoryItem` and determine the updated values.
-4. If a new name is provided, checks that it does not conflict with another existing item in the inventory.
-5. Creates an updated `InventoryItem` with the new metadata while preserving the existing batches, then replaces the old item entry in the inventory.
-6. Calls `storage.saveToFile(inventory)` to persist the updated inventory.
-7. Calls `ui.printEdit(oldName, updatedItem)` to display the updated item details.
-8. Records the edit in the command history.
+4. Checks that at least one resolved field value differs from the current item.
+5. If a new name is provided, checks that it does not conflict with another existing item in the inventory.
+6. Creates an updated `InventoryItem` with the new metadata while preserving the existing batches, then replaces the old item entry in the inventory.
+7. Calls `storage.saveToFile(inventory)` to persist the updated inventory.
+8. Calls `ui.printEdit(oldName, updatedItem)` to display the updated item details.
+9. Records the edit in the command history.
 
 **Failure cases & messages:**
 - If `o/` is missing: "Invalid edit format. Format: edit o/OLD_NAME [n/NEW_NAME] [u/NEW_UNIT] [min/NEW_THRESHOLD]"
@@ -136,6 +137,7 @@ Finds the specified item using its current name, applies the requested updates, 
 - If the new minimum threshold is not a valid number: "New minimum threshold must be a valid number."
 - If the new minimum threshold is zero or negative: "New minimum threshold must be greater than 0."
 - If the item does not exist in inventory: "Product not found: \<old_name\>"
+- If all provided values match the current item: "No changes made to product: \<old_name\>"
 - If the new name already exists in inventory: "Product already exists: \<new_name\>"
 
 **Logging:**
