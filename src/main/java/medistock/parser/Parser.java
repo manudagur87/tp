@@ -59,7 +59,7 @@ public class Parser {
             return prepareRemoveExpired(text);
         } else {
             throw new MediStockException("Unknown command: '" + input.split(" ")[0] + "'.\n"
-                    + "  - Type 'help' to see all available commands\n");
+                    + "  - Type <help> to see all available commands");
         }
     }
 
@@ -146,6 +146,11 @@ public class Parser {
         }
 
         String name = getArgument(text, nameIndex, quantIndex).trim();
+
+        if (name == null || name.trim().isEmpty()) {
+            throw new MediStockException("Missing item name.\n"
+                    + "Format: batch n/NAME q/QUANTITY d/EXPIRY_DATE(YYYY-MM-DD)");
+        }
 
         int quant;
         try {
