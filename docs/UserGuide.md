@@ -83,7 +83,7 @@ Shows all active and expired inventory items, together with their batch informat
 <div style="page-break-after: always;"></div>
 
 ### Viewing Command History: `history`
-Lists the history of changes in the inventory which includes `create`, `batch`, `withdraw` and `delete`.
+Lists the history of changes in the inventory which includes `create`, `batch`, `withdraw`, `delete` and `remove-expired`.
 * **Format:** `history`
 * **Example Output:**
 
