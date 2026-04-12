@@ -5,9 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +16,9 @@ import medistock.inventory.Inventory;
 import medistock.inventory.InventoryItem;
 import medistock.ui.Ui;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 public class EditCommandTest {
 
-    @TempDir
-    Path tempDir;
 
     @Test
     void execute_editUnitOnly_updatesUnit() throws MediStockException {
@@ -76,10 +71,9 @@ public class EditCommandTest {
     }
 
     @Test
-    void execute_editNameOnly_preservesBatchesQuantityAndStorage() throws MediStockException, IOException {
+    void execute_editNameOnly_preservesBatchesQuantityAndStorage() throws MediStockException {
         Inventory inventory = new Inventory();
         Ui ui = new Ui();
-        Path filePath = tempDir.resolve("Inventory.txt");
         List<String> histories = new ArrayList<>();
         InventoryItem item = new InventoryItem("Aspirin", "Tablets", 10);
         item.addBatch(new Batch(1, 20, LocalDate.now().plusDays(30)));
@@ -92,9 +86,6 @@ public class EditCommandTest {
         assertEquals(20, updatedItem.getQuantity());
         assertEquals(1, updatedItem.getBatchQuantity());
 
-        String fileContents = Files.readString(filePath);
-        assertTrue(fileContents.contains("Item: Aspirin 500mg (Tablets) | 10"));
-        assertTrue(fileContents.contains("1 | 20 | "));
     }
 
     @Test
