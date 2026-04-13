@@ -6,8 +6,8 @@
 # Gradle build files
 /.gradle/
 /build/
-/.claude/
 src/main/resources/docs/
+contri.md
 
 # MacOS custom attributes files created by Finder
 .DS_Store
