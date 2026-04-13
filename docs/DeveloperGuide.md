@@ -29,7 +29,7 @@
 
 This developer guide was inspired by 
 (https://se-education.org/addressbook-level4/DeveloperGuide.html#design)
-<br>
+<br> <br>
 Tools that helped with the creation of the MediStocks logo: <br>
 (https://www.asciiart.eu/text-to-ascii-art) <br>
 (https://www.asciiart.eu/image-to-ascii)
