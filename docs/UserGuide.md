@@ -57,6 +57,8 @@ Edits an existing medication entry. You can update its name, unit, minimum thres
 
 ### Listing the Inventory: `list`
 Shows all active and expired inventory items, together with their batch information and stock status.
+Healthy: stock is equal or above the minimum threshold.
+Critical: stock is below the minimum threshold.
 
 * **Format:** `list`
 * **Example Output:**
