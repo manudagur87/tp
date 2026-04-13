@@ -1,0 +1,58 @@
+@startuml
+title Storage Class Diagram
+
+' Enforce clean rectangles and remove C/I circles
+hide circle
+
+' Use standard +/- text instead of colored visibility icons
+skinparam classAttributeIconSize 0
+
+interface Storable <<interface>> {
+    +toFileFormat(): String
+}
+
+class Storage {
+    -filePath: Path
+    +initializeInventory(inv: Inventory)
+    +createNewFile()
+    +saveToFile(inventory: Inventory)
+    +readFromFile(inventory: Inventory)
+    +parseInventoryItem(line: String): InventoryItem
+    +parseItemBatch(line: String): Batch
+}
+
+class InventoryItem {
+    -name: String
+    -unit: String
+    -minimumThreshold: int
+    -nextBatchNumber: int
+    +toFileFormat(): String
+    +addBatch(batch: Batch)
+    +sortAndMarkExpiredBatches()
+    +getExpiredBatches()
+    +getActiveBatches()
+}
+
+class Batch {
+    -batchNumber: int
+    -quantity: int
+    -expiryDate: LocalDate
+    -isExpired: boolean
+    +toFileFormat(): String
+    +markExpired()
+    +reduceQuantity(): int
+    +getBatchNumber(): int
+}
+
+class Inventory {
+    +addItem(item: InventoryItem)
+    +addBatchToItem(itemName: String, batch: Batch)
+}
+
+Storable <|.. InventoryItem
+Storable <|.. Batch
+Storage ..> Inventory
+
+Inventory  -->  InventoryItem 
+InventoryItem  -->  Batch 
+@enduml

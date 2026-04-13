@@ -1,0 +1,23 @@
+@startuml
+title wasMessageConfirm Sequence Diagram
+actor ":User" as User
+participant ":Ui" as Ui
+participant ":BatchCommand" as BatchCommand
+
+BatchCommand -> Ui ++: wasMessageConfirm(errorMessage)
+Ui -> User: Display error + "Do you want to continue? (y/n)"
+loop until valid input or abort
+    User -> Ui: input string
+    alt input == "y"
+        Ui --> BatchCommand: true
+    else input == "n"
+        Ui --> BatchCommand: false
+    else input == ""
+        Ui -> User: "Input cannot be empty. Please enter y or n:"
+    else invalid input
+        Ui -> User: "Invalid input. Aborting command."
+        Ui --> BatchCommand: false
+    end
+end
+deactivate Ui
+@enduml
