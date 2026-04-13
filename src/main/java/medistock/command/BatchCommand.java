@@ -33,8 +33,8 @@ public class BatchCommand extends Command {
         item.sortAndMarkExpiredBatches();
         int batchNumber = item.getBatchNumber();
         if (expiryDate.isBefore(LocalDate.now())) {
-            String errorMessage = "This batch is already expired (" + expiryDate + ").";
-            if (!ui.wasMessageConfirm(errorMessage)) {
+            String confirmationPrompt = "This batch is already expired (" + expiryDate + ").";
+            if (!ui.wasMessageConfirm(confirmationPrompt)) {
                 System.out.println("Batch not added.");
                 ui.printAbortCommand();
                 return;
