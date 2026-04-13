@@ -38,8 +38,8 @@ public class Inventory {
      * @throws MediStockException If an item with the same name already exists.
      */
     public void addItem(InventoryItem item) throws MediStockException {
-        assert item != null: "Item must not be null.";
-        assert item.getName() != null: ASSERT_NAME_NOT_NULL;
+        assert item != null : "Item must not be null.";
+        assert item.getName() != null : ASSERT_NAME_NOT_NULL;
         
         String key = normalizeName(item.getName());
         if (items.containsKey(key)) {
@@ -68,7 +68,7 @@ public class Inventory {
      * @throws MediStockException If the item does not exist.
      */
     public InventoryItem getItem(String name) throws MediStockException {
-        assert name != null: ASSERT_NAME_NOT_NULL;
+        assert name != null : ASSERT_NAME_NOT_NULL;
         
         String key = normalizeName(name);
         if (!items.containsKey(key)) {

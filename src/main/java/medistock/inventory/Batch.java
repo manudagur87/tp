@@ -24,6 +24,10 @@ public class Batch implements Storable {
      * @param expiryDate  The expiry date of the batch.
      */
     public Batch(int batchNumber, int quantity, LocalDate expiryDate) {
+        assert batchNumber > 0 : "Batch number must be positive";
+        assert quantity > 0 : "Quantity must be positive";
+        assert expiryDate != null : "Expiry date cannot be null";
+        
         this.batchNumber = batchNumber;
         this.quantity = quantity;
         this.expiryDate = expiryDate;
@@ -63,7 +67,4 @@ public class Batch implements Storable {
     public String toFileFormat() {
         return String.format("%d | %s | %tF", this.batchNumber, this.quantity, this.expiryDate);
     }
-
-
-
 }

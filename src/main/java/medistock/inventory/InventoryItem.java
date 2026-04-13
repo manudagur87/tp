@@ -161,7 +161,6 @@ public class InventoryItem implements Storable {
                 remaining = 0;
             }
         }
-
         return quantity - remaining;
     }
 
