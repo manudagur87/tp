@@ -7,16 +7,12 @@ participant ":Ui" as Ui
 participant ":Parser" as Parser
 participant ":EditCommand" as EditCommand
 participant ":Inventory" as Inventory
-participant ":Storage" as Storage
-participant ":HistoryStorage" as HistoryStorage
 
 User -> App : run "edit o/... [n/...] [u/...] [min/...]"
 activate App
-
-App -> Ui : getInput()
-activate Ui
-Ui --> App : input
-deactivate Ui
+ref over App, Ui
+    Get Input Sequence
+end
 
 App -> Parser : parseCommand(input)
 activate Parser
@@ -25,7 +21,7 @@ Parser -> EditCommand : new EditCommand(...)
 Parser --> App : editCommand
 deactivate Parser
 
-App -> EditCommand : execute(inventory, ui, storage, histories)
+App -> EditCommand : execute(inventory, ui)
 activate EditCommand
 
 EditCommand -> Inventory : editItem(...)
@@ -33,11 +29,6 @@ activate Inventory
 Inventory -> Inventory : create updated item\nand replace old entry
 Inventory --> EditCommand : updatedItem
 deactivate Inventory
-
-EditCommand -> Storage : saveToFile(inventory)
-activate Storage
-Storage --> EditCommand
-deactivate Storage
 
 EditCommand -> Ui : printEdit(...)
 activate Ui
@@ -48,9 +39,8 @@ EditCommand -> EditCommand : histories.add(...)
 EditCommand --> App
 deactivate EditCommand
 
-App -> HistoryStorage : save(histories)
-activate HistoryStorage
-HistoryStorage --> App
-deactivate HistoryStorage
+ref over App
+    Local Storage Saving
+end
 deactivate App
 @enduml

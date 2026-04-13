@@ -1,0 +1,43 @@
+@startuml
+title Local Storage Saving Sequence Diagram
+
+
+participant ":MediStock" as MediStock
+participant ":Storage" as Storage
+participant ":HistoryStorage" as historyStorage
+participant ":Inventory" as Inventory
+participant ":InventoryItem" as InventoryItem
+participant ":Batch" as Batch
+
+MediStock -> Storage ++: saveToFile(inventory)
+
+Storage -> Inventory ++: getAllItems()
+Inventory --> Storage --: Collection<InventoryItem>
+
+loop for each item in inventory
+    Storage -> InventoryItem ++: toFileFormat()
+    InventoryItem --> Storage --: return Formatted String
+
+    Storage -> InventoryItem ++: getActiveBatches()
+    InventoryItem --> Storage --: return List<Batch>
+
+    loop for each active batch
+        Storage -> Batch ++: toFileFormat()
+        Batch --> Storage --: return Formatted String
+    end
+
+    Storage -> InventoryItem ++: getExpiredBatches()
+    InventoryItem --> Storage --: return List<Batch>
+
+    loop for each expired batch
+        Storage -> Batch ++: toFileFormat()
+        Batch --> Storage --: return Formatted String
+    end
+end
+
+MediStock <-- Storage --: return
+
+MediStock -> historyStorage ++: save(histories)
+
+MediStock <-- historyStorage --: return
+@enduml

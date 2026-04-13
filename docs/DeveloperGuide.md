@@ -15,6 +15,7 @@
     - [Feature: List History](#feature-list-history)
     - [Feature: Remove Expired Batches](#feature-remove-expired-batches)
     - [Feature: Automatic Expiry Detection](#feature-automatic-expiry-detection)
+    - [Feature: Low Stock Warning](#feature-low-stock-warning)
     - [Feature: Help Command](#feature-help-command)
     - [Feature: Exit Command](#feature-exit-command)
     - [Feature: Local Storage](#feature-local-storage)
@@ -204,7 +205,7 @@ Finds the item by name, organizes existing batches to flag expired ones, and ver
 withdraw n/<name> q/<quantity>
 ```
 
-Finds the item by name, sorts its batches by expiry date (earliest first), marks any expired batches, then deducts the requested quantity from the remaining non-expired batches. Batches that reach zero quantity are removed. If the withdrawal spans multiple batches, earlier batches are fully depleted before moving to the next. If there is insufficient stock, the available quantity is withdrawn and the user is informed of the shortfall.
+Finds the item by name, sorts its batches by expiry date (earliest first), marks any expired batches, then deducts the requested quantity from the remaining non-expired batches. Batches that reach zero quantity are removed. If the withdrawal spans multiple batches, earlier batches are fully depleted before moving to the next.
 
 **Behaviour:**
 1. Parses the user input to extract the item name and quantity.
@@ -212,9 +213,9 @@ Finds the item by name, sorts its batches by expiry date (earliest first), marks
 3. Calls `inventory.getItem(name)` to retrieve the corresponding `InventoryItem`.
 4. Calls `item.withdraw(quantity)` which:
    - Sorts batches by expiry date (earliest first) and marks expired batches.
+   - Checks that total available (non-expired) quantity is sufficient.
    - Deducts from non-expired batches in order, removing fully depleted batches.
-   - Returns the actual quantity withdrawn, which may be less than requested if stock is insufficient.
-5. Calls `ui.printWithdraw(quantity, withdrawnQuantity, item)` to display the withdrawn amount and the updated stock. If the withdrawn quantity is less than requested, displays a top-up warning.
+5. Calls `ui.printWithdraw(quantity, item)` to display the withdrawn amount and the updated stock.
 6. Records the withdrawal in the command history.
 
 **Failure cases & messages:**
@@ -224,6 +225,7 @@ Finds the item by name, sorts its batches by expiry date (earliest first), marks
 - If quantity is not a valid number: "Quantity must be a valid number."
 - If quantity is zero or negative: "Quantity must be greater than 0."
 - If item does not exist in inventory: "Product not found: \<name\>"
+- If insufficient non-expired stock: "Insufficient stock for \<name\>. Available: \<available\>, Requested: \<quantity\>"
 
 **Logging:**
 - WARNING when attempting to get a non-existent item.
@@ -466,6 +468,7 @@ This is not a user-invoked command. It is an internal mechanism triggered automa
 - `withdraw` command — before deducting stock
 - `batch` command — after adding a new batch
 - `list` command — when printing item details
+- `remove-expired` command — before collecting expired batches
 
 **Behaviour:**
 1. When any of the above commands execute, `item.sortAndMarkExpiredBatches()` is called on the relevant `InventoryItem`.
@@ -540,12 +543,12 @@ illustrated together in a single sequence diagram.
 ![LocalStorage_SequenceDiagram.png](diagrams/LocalStorage_SequenceDiagram.png)
 <br>
 
-### Feature: Preserved Inventory Storage
+### Feature: Inventory Storage
 ![InventoryStorage_ClassDiagram.png](diagrams/InventoryStorage_ClassDiagram.png)
 ![StorageInitialization_SequenceDiagram.png](diagrams/StorageInitialization_SequenceDiagram.png)
 
 **Purpose:** Responsible for persisting the state of the `Inventory` to a local text file,
-and loading it back into memory upon application startup, so that the inventory is saved in between sessions.
+and loading it back into memory upon application startup
 
 <br>
 

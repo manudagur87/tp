@@ -10,9 +10,9 @@ participant ":Inventory" as Inventory
 
 User -> App : enters list
 activate App
-
-App -> Ui : getInput()
-Ui --> App : input
+ref over App, Ui
+    Get Input Sequence
+end
 
 App -> Parser : parseCommand(input)
 activate Parser
@@ -53,7 +53,6 @@ deactivate Ui
 ListCommand --> App : return
 deactivate ListCommand
 
-App --> User : inventory displayed
 deactivate App
 
 @enduml

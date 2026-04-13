@@ -9,6 +9,7 @@ participant ":Inventory" as Inventory
 participant ":InventoryItem" as InventoryItem
 
 User -> MediStock: run "batch ..."
+activate MediStock
 ref over MediStock, Ui, Parser
     Input Parsing Sequence
 end
@@ -35,8 +36,6 @@ else item exists
     end
     BatchCommand -> InventoryItem ++: getBatchNumber()
     return batchNumber
-    create ":Batch" as Batch
-    BatchCommand -> Batch: new Batch(batchNumber, quantity, expiryDate)
     BatchCommand -> InventoryItem ++: addBatch(newBatch)
     deactivate InventoryItem
     BatchCommand -> InventoryItem ++: sortAndMarkExpiredBatches()
@@ -45,9 +44,12 @@ else item exists
     deactivate Ui
     BatchCommand -> InventoryItem ++: getUnit()
     return unit
-    BatchCommand -> BatchCommand: toHistoryString(unit)
+    BatchCommand --> MediStock
+    deactivate BatchCommand
 end
 ref over MediStock
     Local Storage Saving
 end
+deactivate MediStock
+
 @enduml

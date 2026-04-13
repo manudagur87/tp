@@ -2,18 +2,16 @@
 title HistoryCommand Sequence Diagram
 
 actor User
-participant ":Medistock" as App
+participant ":MediStock" as App
 participant ":Ui" as Ui
 participant ":Parser" as Parser
 participant ":HistoryCommand" as HistoryCommand
 
 User -> App : run "history"
 activate App
-
-App -> Ui : getInput()
-activate Ui
-Ui --> App : input: String
-deactivate Ui
+ref over App, Ui
+    Get Input Sequence
+end
 
 App -> Parser : parseCommand(input: String)
 activate Parser
@@ -49,6 +47,8 @@ deactivate Ui
 HistoryCommand --> App : return
 deactivate HistoryCommand
 
-App --> User : List of History
+ref over App
+    Local Storage Saving
+end
 deactivate App
 @enduml

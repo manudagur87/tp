@@ -2,7 +2,7 @@
 title FindCommand Sequence Diagram
 
 actor User
-participant ":Medistock" as App
+participant ":MediStock" as App
 participant ":Ui" as Ui
 participant ":Parser" as Parser
 participant ":FindCommand" as FindCommand
@@ -10,11 +10,9 @@ participant ":Inventory" as Inventory
 
 User -> App : run "find <keyword>"
 activate App
-
-App -> Ui : getInput()
-activate Ui
-Ui --> App : input:String
-deactivate Ui
+ref over App, Ui
+    Get Input Sequence
+end
 
 App -> Parser : parseCommand(input:String)
 activate Parser
@@ -33,7 +31,7 @@ deactivate FindCommand
 Parser --> App : command:FindCommand
 deactivate Parser
 
-App -> FindCommand : execute(inventory:Inventory, ui:Ui)
+App -> FindCommand : execute(inventory, ui)
 activate FindCommand
 
 FindCommand -> Inventory : findItem(keyword:String)
@@ -66,7 +64,6 @@ deactivate Ui
 FindCommand --> App
 deactivate FindCommand
 
-App --> User : results shown
 deactivate App
 
 @enduml

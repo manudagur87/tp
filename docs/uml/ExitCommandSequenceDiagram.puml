@@ -2,7 +2,7 @@
 title ExitCommand Sequence Diagram
 
 actor User
-participant ":Medistock" as App
+participant ":MediStock" as App
 participant ":Ui" as Ui
 participant ":Parser" as Parser
 participant ":ExitCommand" as ExitCommand
@@ -10,11 +10,9 @@ participant ":ExitCommand" as ExitCommand
 
 User -> App : run "exit"
 activate App
-
-App -> Ui : getInput()
-activate Ui
-Ui --> App : "exit"
-deactivate Ui
+ref over App, Ui
+    Get Input Sequence
+end
 
 App -> Parser : parseCommand("exit")
 activate Parser
@@ -35,6 +33,7 @@ activate App
 
 deactivate App
 App -> System : System.exit(0)
+
 
 deactivate App
 @enduml

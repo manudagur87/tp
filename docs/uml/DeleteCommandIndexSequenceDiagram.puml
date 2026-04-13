@@ -2,21 +2,17 @@
 title DeleteCommandIndex Sequence Diagram
 
 actor User
-participant ":Medistock" as App
+participant ":MediStock" as App
 participant ":Ui" as Ui
 participant ":Parser" as Parser
 participant ":DeleteCommandIndex" as DeleteCommandIndex
 participant ":Inventory" as Inventory
-participant ":Storage" as Storage
-participant ":HistoryStorage" as HistoryStorage
 
 User -> App : run "delete i/<index>"
 activate App
-
-App -> Ui : getInput()
-activate Ui
-Ui --> App : input:String
-deactivate Ui
+ref over App, Ui
+    Get Input Sequence
+end
 
 App -> Parser : parseCommand(input:String)
 activate Parser
@@ -30,7 +26,7 @@ deactivate DeleteCommandIndex
 Parser --> App : command:DeleteCommandIndex
 deactivate Parser
 
-App -> DeleteCommandIndex : execute(inventory:Inventory, ui:Ui)
+App -> DeleteCommandIndex : execute(inventory, ui)
 activate DeleteCommandIndex
 
 DeleteCommandIndex -> Inventory : deleteItem(index:int)
@@ -49,19 +45,11 @@ activate Ui
 Ui --> DeleteCommandIndex : return
 deactivate Ui
 
-DeleteCommandIndex -> Storage : saveToFile(inventory)
-activate Storage
-Storage --> DeleteCommandIndex : return
-deactivate Storage
-
 DeleteCommandIndex --> App : return
 deactivate DeleteCommandIndex
+ref over App
+    Local Storage Saving
+end
 
-App -> HistoryStorage : save(histories)
-activate HistoryStorage
-HistoryStorage --> App : return
-deactivate HistoryStorage
-
-App --> User : Item deleted
 deactivate App
 @enduml

@@ -2,18 +2,16 @@
 title HelpCommand Sequence Diagram
 
 actor User
-participant ":Medistock" as App
+participant ":MediStock" as App
 participant ":Ui" as Ui
 participant ":Parser" as Parser
 participant ":HelpCommand" as HelpCommand
 
 User -> App : run "help"
 activate App
-
-App -> Ui : getInput()
-activate Ui
-Ui --> App : "help"
-deactivate Ui
+ref over App, Ui
+    Get Input Sequence
+end
 
 App -> Parser : parseCommand("help")
 activate Parser
@@ -31,6 +29,5 @@ deactivate Ui
 HelpCommand --> App : return
 deactivate HelpCommand
 
-App --> User : return
 deactivate App
 @enduml
