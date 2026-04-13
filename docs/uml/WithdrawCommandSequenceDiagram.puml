@@ -49,32 +49,34 @@ Item -> Item : sortAndMarkExpiredBatches()
 activate Item
 deactivate Item
 
-alt getQuantity() < quantity
-    Item --> WithdrawCommand : throw MediStockException("Insufficient stock...")
-else sufficient stock
-    loop remaining > 0 and batches left
-        alt batch is expired
-            Item -> Item : skip batch
+loop remaining > 0 and batches left
+    alt batch is expired
+        Item -> Item : skip batch
+        activate Item
+        deactivate Item
+    else batch not expired
+        alt batch quantity <= remaining
+            Item -> Item : remove batch
             activate Item
             deactivate Item
-        else batch not expired
-            alt batch quantity <= remaining
-                Item -> Item : remove batch
-                activate Item
-                deactivate Item
-            else batch quantity > remaining
-                Item -> Item : reduceQuantity(remaining)
-                activate Item
-                deactivate Item
-            end
+        else batch quantity > remaining
+            Item -> Item : reduceQuantity(remaining)
+            activate Item
+            deactivate Item
         end
     end
-    Item --> WithdrawCommand : return
 end
+
+Item --> WithdrawCommand : withdrawnQuantity:int
 deactivate Item
 
-WithdrawCommand -> Ui : printWithdraw(quantity:int, item:InventoryItem)
+WithdrawCommand -> Ui : printWithdraw(quantity:int, withdrawnQuantity:int, item:InventoryItem)
 activate Ui
+alt withdrawnQuantity < quantity
+    Ui -> Ui : print top-up warning
+    activate Ui
+    deactivate Ui
+end
 Ui --> WithdrawCommand : return
 deactivate Ui
 

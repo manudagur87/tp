@@ -93,10 +93,8 @@ public class InventoryItem implements Storable {
      */
     public int getQuantity() {
         int totalQuantity = 0;
-        for (Batch batch : batches) {
-            if (!batch.isExpired()) {
-                totalQuantity += batch.getQuantity();
-            }
+        for (Batch batch : getActiveBatches()) {
+            totalQuantity += batch.getQuantity();
         }
         return totalQuantity;
     }
