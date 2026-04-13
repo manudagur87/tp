@@ -1,0 +1,53 @@
+@startuml
+title BatchCommand Sequence Diagram
+note right of InventoryItem #pink: Precondition: the item already exists in inventory
+actor ":User" as User
+participant ":MediStock" as MediStock
+participant ":Ui" as Ui
+participant ":Parser" as Parser
+participant ":Inventory" as Inventory
+participant ":InventoryItem" as InventoryItem
+
+User -> MediStock: run "batch ..."
+ref over MediStock, Ui, Parser
+    Input Parsing Sequence
+end
+opt input.startsWith("batch")
+    create ":BatchCommand" as BatchCommand
+    Parser -> BatchCommand: new BatchCommand(name, quantity, expiryDate)
+end
+MediStock -> BatchCommand ++: execute(inventory, ui, histories)
+BatchCommand -> Inventory ++: hasItem(name)
+return boolean
+alt item does not exist
+    BatchCommand -> Ui ++: printError(...)
+    deactivate Ui
+    BatchCommand --> MediStock
+else item exists
+    BatchCommand -> Inventory ++: getItem(name)
+    return item
+    BatchCommand -> InventoryItem ++: sortAndMarkExpiredBatches()
+    deactivate InventoryItem
+    opt expiryDate.isBefore(today)
+        ref over User, Ui, BatchCommand
+            wasMessageConfirm Sequence
+        end
+    end
+    BatchCommand -> InventoryItem ++: getBatchNumber()
+    return batchNumber
+    create ":Batch" as Batch
+    BatchCommand -> Batch: new Batch(batchNumber, quantity, expiryDate)
+    BatchCommand -> InventoryItem ++: addBatch(newBatch)
+    deactivate InventoryItem
+    BatchCommand -> InventoryItem ++: sortAndMarkExpiredBatches()
+    deactivate InventoryItem
+    BatchCommand -> Ui ++: printBatch(...)
+    deactivate Ui
+    BatchCommand -> InventoryItem ++: getUnit()
+    return unit
+    BatchCommand -> BatchCommand: toHistoryString(unit)
+end
+ref over MediStock
+    Local Storage Saving
+end
+@enduml

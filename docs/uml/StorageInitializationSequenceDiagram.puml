@@ -1,0 +1,41 @@
+@startuml
+title Storage Initialization Sequence Diagram
+
+participant ":main()" as main
+participant ":MediStock" as MediStock
+
+note over main: Application Launch
+
+main -> MediStock ++: new MediStock(path)
+create ":Storage" as Storage
+MediStock -> Storage: new Storage(path)
+create ":Inventory" as Inventory
+MediStock -> Inventory: new Inventory()
+main <-- MediStock --: return
+
+main -> MediStock ++: boot()
+MediStock -> Storage ++: initializeInventory(inventory)
+alt file exists
+    Storage -> Storage ++: readFromFile(inventory)
+    loop for each line in .txt file
+        alt line starts with "item:"
+            Storage -> Storage: parseInventoryItem(line)
+            create ":InventoryItem" as InventoryItem
+            Storage -> InventoryItem: new InventoryItem(name, unit, minThreshold, nextBatchNumber)
+            Storage -> Inventory ++: addItem(newItem)
+            deactivate Inventory
+        else
+            Storage -> Storage: parseItemBatch(line)
+            create ":Batch" as Batch
+            Storage -> Batch: new Batch(batchNumber, quantity, expiryDate)
+            Storage -> Inventory ++: addBatchToItem(currentItemName, newBatch)
+            deactivate Inventory
+        end
+    end
+    deactivate Storage
+else file does not exist
+    Storage -> Storage: createNewFile()
+end
+MediStock <-- Storage --: return
+deactivate MediStock
+@enduml
