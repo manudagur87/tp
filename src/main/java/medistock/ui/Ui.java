@@ -374,8 +374,12 @@ public class Ui {
         printLine();
     }
 
-    public static void printWithdraw(int quantity, InventoryItem item) {
-        System.out.printf("Withdrawn %d %s from inventory.%n", quantity, item.getName());
+    public static void printWithdraw(int requestedQuantity, int withdrawnQuantity, InventoryItem item) {
+        System.out.printf("Withdrawn %d %s from inventory.%n", withdrawnQuantity, item.getName());
+        if (withdrawnQuantity < requestedQuantity) {
+            int remainingQuantity = requestedQuantity - withdrawnQuantity;
+            System.out.printf("Please top up at least %d more to fulfill request.%n", remainingQuantity);
+        }
         printLine();
         System.out.printf("Stock of %s is now: ", item.getName());
         printItemDetails(item);

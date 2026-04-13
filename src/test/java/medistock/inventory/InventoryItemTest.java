@@ -3,7 +3,6 @@ package medistock.inventory;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
 import medistock.exception.MediStockException;
@@ -28,8 +27,9 @@ public class InventoryItemTest {
         InventoryItem item = new InventoryItem("Aspirin 500mg", "Tablet", 10);
         item.addBatch(new Batch(1, 20, LocalDate.now().plusDays(30)));
 
-        item.withdraw(7);
+        int withdrawnQuantity = item.withdraw(7);
 
+        assertEquals(7, withdrawnQuantity);
         assertEquals(13, item.getQuantity());
         assertEquals(1, item.getBatchQuantity());
     }
@@ -39,19 +39,23 @@ public class InventoryItemTest {
         InventoryItem item = new InventoryItem("Aspirin 500mg", "Tablet", 10);
         item.addBatch(new Batch(1, 8, LocalDate.now().plusDays(30)));
 
-        item.withdraw(8);
+        int withdrawnQuantity = item.withdraw(8);
 
+        assertEquals(8, withdrawnQuantity);
         assertEquals(0, item.getQuantity());
         assertEquals(0, item.getBatchQuantity());
     }
 
     @Test
-    void withdraw_insufficientStock_throwsException() throws MediStockException {
+    void withdraw_insufficientStock_withdrawsAvailableStock() throws MediStockException {
         InventoryItem item = new InventoryItem("Aspirin 500mg", "Tablet", 10);
         item.addBatch(new Batch(1, 5, LocalDate.now().plusDays(30)));
 
-        assertThrows(MediStockException.class,
-                () -> item.withdraw(6));
+        int withdrawnQuantity = item.withdraw(6);
+
+        assertEquals(5, withdrawnQuantity);
+        assertEquals(0, item.getQuantity());
+        assertEquals(0, item.getBatchQuantity());
     }
 
     @Test
@@ -60,23 +64,26 @@ public class InventoryItemTest {
         item.addBatch(new Batch(1, 5, LocalDate.now().plusDays(5)));
         item.addBatch(new Batch(2, 10, LocalDate.now().plusDays(20)));
 
-        item.withdraw(7);
+        int withdrawnQuantity = item.withdraw(7);
 
+        assertEquals(7, withdrawnQuantity);
         assertEquals(8, item.getQuantity());
         assertEquals(1, item.getBatchQuantity());
     }
 
     @Test
-    void withdraw_insufficientValidStock_throwsException() throws MediStockException {
+    void withdraw_insufficientValidStock_withdrawsAvailableValidStock() throws MediStockException {
         InventoryItem item = new InventoryItem("Aspirin 500mg", "Tablet", 10);
         item.addBatch(new Batch(1, 10, LocalDate.now().minusDays(1)));
         item.addBatch(new Batch(2, 5, LocalDate.now().plusDays(10)));
 
-        assertThrows(MediStockException.class,
-                () -> item.withdraw(6));
+        int withdrawnQuantity = item.withdraw(6);
 
-        assertEquals(5, item.getQuantity());
-        assertEquals(1, item.getBatchQuantity());
+        assertEquals(5, withdrawnQuantity);
+        assertEquals(0, item.getQuantity());
+        assertEquals(0, item.getBatchQuantity());
+        assertEquals(1, item.getTotalBatchQuantity());
+        assertEquals(1, item.getExpiredBatches().size());
     }
 
     @Test
@@ -84,11 +91,9 @@ public class InventoryItemTest {
         InventoryItem item = new InventoryItem("Paracetamol 500mg", "Tablets", 10);
         item.addBatch(new Batch(1, 10, LocalDate.now().minusDays(1)));
 
-        MediStockException exception = assertThrows(MediStockException.class,
-                () -> item.withdraw(5));
+        int withdrawnQuantity = item.withdraw(5);
 
-        assertEquals("Insufficient stock for Paracetamol 500mg. Available: 0, Requested: 5",
-                exception.getMessage());
+        assertEquals(0, withdrawnQuantity);
         assertEquals(0, item.getQuantity());
         assertEquals(0, item.getBatchQuantity());
         assertEquals(1, item.getTotalBatchQuantity());

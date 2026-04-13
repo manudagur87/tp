@@ -22,12 +22,12 @@ public class WithdrawCommand extends Command {
     @Override
     public void execute(Inventory inventory, Ui ui, List<String> histories) throws MediStockException {
         InventoryItem item = inventory.getItem(name);
-        item.withdraw(quantity);
-        ui.printWithdraw(quantity, item);
-        histories.add(toHistoryString(item.getUnit()));
+        int withdrawnQuantity = item.withdraw(quantity);
+        ui.printWithdraw(quantity, withdrawnQuantity, item);
+        histories.add(toHistoryString(withdrawnQuantity, item.getUnit()));
     }
 
-    public String toHistoryString(String unit) {
-        return "Withdrawn " + quantity + " " + unit + " of '" + name + "'.";
+    public String toHistoryString(int withdrawnQuantity, String unit) {
+        return "Withdrawn " + withdrawnQuantity + " " + unit + " of '" + name + "'.";
     }
 }

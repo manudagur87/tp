@@ -138,17 +138,10 @@ public class InventoryItem implements Storable {
      * before moving to the next. Batches that reach zero quantity are removed.
      *
      * @param quantity The amount to withdraw.
-     * @throws MediStockException If the total available (non-expired) quantity
-     *                            is less than the requested amount.
+     * @return The quantity successfully withdrawn.
      */
-    public void withdraw(int quantity) throws MediStockException {
+    public int withdraw(int quantity) {
         sortAndMarkExpiredBatches();
-
-        // Check if enough stock remains after marking expired batches
-        if (getQuantity() < quantity) {
-            throw new MediStockException("Insufficient stock for " + name
-                    + ". Available: " + getQuantity() + ", Requested: " + quantity);
-        }
 
         // Deduct from non-expired batches in order (earliest expiry first)
         int remaining = quantity;
@@ -168,6 +161,8 @@ public class InventoryItem implements Storable {
                 remaining = 0;
             }
         }
+
+        return quantity - remaining;
     }
 
     /**
