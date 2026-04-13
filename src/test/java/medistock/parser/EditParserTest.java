@@ -85,6 +85,22 @@ public class EditParserTest {
     }
 
     @Test
+    void parseCommand_dosageOnlyNewName_throwsException() {
+        String input = "edit o/Aspirin n/100mg";
+
+        assertThrows(MediStockException.class,
+                () -> Parser.parseCommand(input));
+    }
+
+    @Test
+    void parseCommand_negativeDosageInNewName_throwsException() {
+        String input = "edit o/Aspirin n/Paracetamol -100mg";
+
+        assertThrows(MediStockException.class,
+                () -> Parser.parseCommand(input));
+    }
+
+    @Test
     void parseCommand_emptyNewUnit_throwsException() {
         String input = "edit o/Aspirin u/ min/20";
 
