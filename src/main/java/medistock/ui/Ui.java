@@ -195,12 +195,16 @@ public class Ui {
             int itemIndex = 1;
             printLine();
             System.out.println("History of Stocks:");
-            for (java.lang.String commandText : histories) {
-                System.out.println(itemIndex + ". " + commandText);
+            for (String commandText : histories) {
+                printHistory(commandText, itemIndex);
                 itemIndex++;
             }
             printLine();
         }
+    }
+
+    private static void printHistory(String commandText, int itemIndex) {
+        System.out.println(itemIndex + ". " + commandText);
     }
 
     public int getItemIndex(Inventory inventory, String searchName) {

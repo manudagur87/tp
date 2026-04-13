@@ -23,13 +23,24 @@ public class RemoveExpiredCommand extends Command {
         if (name == null) {
             int count = inventory.removeAllExpiredBatches();
             ui.printRemoveExpired(count);
+            histories.add(toHistoryStringAll(count));
         } else {
             if (!inventory.hasItem(name)) {
-                throw new MediStockException("Product not found: " + name);
+                throw new MediStockException(
+                        "Product not found: " + name);
             }
             InventoryItem item = inventory.getItem(name);
             int count = item.removeExpiredBatches();
             ui.printRemoveExpired(name, count);
+            histories.add(toHistoryString(count));
         }
+    }
+
+    public String toHistoryStringAll(int count) {
+        return "Removed " + count + " expired batch(es) from inventory.";
+    }
+
+    public String toHistoryString(int count) {
+        return "Removed " + count + " expired batch(es) from '" + name + "'.";
     }
 }

@@ -1,0 +1,54 @@
+@startuml
+title HistoryCommand Sequence Diagram
+
+actor User
+participant ":Medistock" as App
+participant ":Ui" as Ui
+participant ":Parser" as Parser
+participant ":HistoryCommand" as HistoryCommand
+
+User -> App : run "history"
+activate App
+
+App -> Ui : getInput()
+activate Ui
+Ui --> App : input: String
+deactivate Ui
+
+App -> Parser : parseCommand(input: String)
+activate Parser
+
+create HistoryCommand
+Parser -> HistoryCommand : new HistoryCommand(name: String)
+activate HistoryCommand
+HistoryCommand --> Parser : command: HistoryCommand
+deactivate HistoryCommand
+
+Parser --> App : command:HistoryCommand
+deactivate Parser
+
+App -> HistoryCommand : execute(inventory: Inventory, ui: Ui)
+activate HistoryCommand
+
+HistoryCommand -> Ui : showHistory(histories: List<String>)
+activate Ui
+alt histories.isEmpty()
+    Ui -> Ui : printEmptyHistoryMessage()
+    activate Ui
+    deactivate Ui
+else
+    loop each history change in histories
+        Ui -> Ui : printHistory(commandText: String, itemIndex: int)
+        activate Ui
+        deactivate Ui
+    end
+end
+Ui --> HistoryCommand : return
+deactivate Ui
+
+HistoryCommand --> App : return
+deactivate HistoryCommand
+
+App --> User : List of History
+deactivate App
+@enduml

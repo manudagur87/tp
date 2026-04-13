@@ -44,6 +44,30 @@ class InventoryTest {
     }
 
     @Test
+    void deleteItem_nonPositiveIndex_throwsException() throws MediStockException {
+        Inventory inventory = new Inventory();
+        inventory.addItem(new InventoryItem("Paracetamol 500mg", "Tablet", 200));
+        int input = 0;
+
+        MediStockException exception = assertThrows(MediStockException.class,
+                () -> inventory.deleteItem(input));
+
+        assertEquals("Index entered out of bounds! Valid indices: 1 to 1",
+                exception.getMessage());
+    }
+
+    @Test
+    void deleteItem_noItemsInInventory_throwsException() throws MediStockException {
+        Inventory inventory = new Inventory();
+        int input = 1;
+        MediStockException exception = assertThrows(MediStockException.class,
+                () -> inventory.deleteItem(input));
+
+        assertEquals("Unable to delete as inventory is empty!",
+                exception.getMessage());
+    }
+
+    @Test
     void deleteItem_nonExistingItem_throwsException() {
         Inventory inventory = new Inventory();
 
@@ -133,17 +157,5 @@ class InventoryTest {
 
         assertEquals(1, result.size());
         assertEquals(paracetamol, result.get(0));
-    }
-
-    @Test
-    void delete_invalidIndex_throwsException() throws MediStockException {
-        Inventory inventory = new Inventory();
-        inventory.addItem(new InventoryItem("Paracetamol 500mg", "Tablet", 200));
-
-        MediStockException exception = assertThrows(MediStockException.class,
-                () -> inventory.deleteItem(2));
-
-        assertEquals("Index entered out of bounds! Valid indices: 1 to 1",
-                exception.getMessage());
     }
 }
