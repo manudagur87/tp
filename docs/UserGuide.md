@@ -56,8 +56,8 @@ Edits an existing medication entry. You can update its name, unit, minimum thres
 
 ### Listing the Inventory: `list`
 Shows all active and expired inventory items, together with their batch information and stock status.
-Healthy: stock is equal or above the minimum threshold.
-Critical: stock is below the minimum threshold.
+>Healthy: stock is equal or above the minimum threshold. <br>
+>Critical: stock is below the minimum threshold.
 
 * **Format:** `list`
 * **Example Output:**
@@ -80,6 +80,37 @@ Critical: stock is below the minimum threshold.
         Batch 1: 100 Capsules, Exp: 2024-01-15
     ____________________________________________________________
     ```
+
+### Adding a Batch: `batch`
+Adds a batch to an existing medication entry. 
+* **Format:** `batch n/NAME q/QUANTITY d/EXPIRY_DATE`
+* **Example:** `batch n/Paracetamol 500mg q/200 d/2028-06-07`
+* **Example Output:**
+
+    ```text
+    Batch of 200 Paracetamol 500mg, expiring on 2028-06-07
+     has been successfully to the inventory!
+    ____________________________________________________________
+    Stock of Paracetamol 500mg is now:
+    1. Paracetamol 500mg (Min: 250)
+        Active Batches:
+            Batch 2: 200 Tablets, Exp: 2028-06-07
+            Batch 1: 200 Tablets, Exp: 2028-06-09
+        Total (active): 200 Tablets
+        Status: Critical
+    ____________________________________________________________
+    ```
+> **Adding Expired Batches:** 
+> If the specified expiry date is in the current past, the system will trigger a confirmation dialog to prevent accidental entries. 
+> You must respond with y or a space to proceed. Inputting any other character will immediately abort the command. 
+>
+> **input:** ```batch n/Vyvanse 70mg q/400 d/2025-11-30```<br>
+> **Example Output:** 
+> ```text
+> This batch has already expired (2025-11-30).
+> Do you want to continue anyways? (y/n)
+> ```
+> 
 
 <div style="page-break-after: always;"></div>
 
@@ -127,26 +158,6 @@ Removes an entire Medication Class from the inventory permanently.
     ```text 
     ____________________________________________________________
     Product deleted: Paracetamol 500mg (Tablets)
-    ____________________________________________________________
-    ```
-
-### Adding a Batch: `batch`
-Adds a batch to an existing medication entry.
-
-* **Format:** `batch n/NAME q/QUANTITY d/EXPIRY_DATE`
-* **Example:** `batch n/Paracetamol 500mg q/200 d/2028-06-07`
-* **Example Output:**
-
-    ```text
-    Batch of 200 Paracetamol 500mg, expiring on 2028-06-07
-     has been successfully to the inventory!
-    ____________________________________________________________
-    Stock of Paracetamol 500mg is now:
-    1. Paracetamol 500mg (Min: 250)
-        Active Batches:
-            Batch 1: 200 Tablets, Exp: 2028-06-07
-        Total (active): 200 Tablets
-        Status: Critical
     ____________________________________________________________
     ```
 
@@ -239,7 +250,7 @@ Saves the inventory and exits the application.
     ____________________________________________________________
     ```
 
-## Saving the Data
+## Local Storage
 * **Automatic  Saving:** Any changes made to the inventory (such as adding medications or batches) are
 immediately saved to your local storage after a command executes successfully.
 * **Command History:** Your command history is also tracked and saved automatically
@@ -249,13 +260,13 @@ The following runtime files are created locally for storage:
 - `data/History.txt`
 - `data/medistock.log`
 
-## Editing the Data Files
-You can edit `data/Inventory.txt` and `data/History.txt` manually, but do so only when the application is not running.
 
-If the file format is edited incorrectly, MediStock may fail to load the stored data properly.
+>**Warning:** You may edit `data/Inventory.txt` and `data/History.txt` manually, however, do not do so while
+MediStock is running. <br> 
+> - *Edits made during an active session will be overwritten.* <br>
+> - *If the file is manually corrupted or edited incorrectly*, MediStock may output an error message on launch or fail to load saved data properly.*  <br>
 
 ## FAQ
-
 **Q:** Where is my data saved?  
 **A:** MediStock saves its inventory, command history, and application logs in the `data/` folder, specifically in 
 `data/Inventory.txt`, `data/History.txt`, and `data/medistock.log`.
@@ -264,7 +275,12 @@ If the file format is edited incorrectly, MediStock may fail to load the stored 
 **A:** A batch is one stock entry of the same medication with its own quantity and expiry date. This is useful because 
 you may receive the same medication multiple times with different expiry dates. For example, you can have two batches 
 of `Paracetamol 500mg`, each with a different expiry date. MediStock keeps those batches separate and withdraws from 
-the earliest-expiring batch first.
+the earliest-expiring batch first.'
+
+**Q:** What is the batch number even tracking? <br>
+**A:** The Batch Number (i.e **2** in Batch ```Batch 2: 60 Tablets, Exp: 2028-06-07)```, tracks the cumulative 
+count of batches for an item; it increments sequentially with every new batch added and **can be reset by deleting and 
+recreating the item**.
 
 **Q:** Where can I find the index of the medical item?  
 **A:** The index is the number shown beside the item in the output of the `list` command.
@@ -275,10 +291,14 @@ is above the medication’s minimum threshold. It does not guarantee that there 
 every withdrawal request. If the available non-expired stock is less than the requested quantity, the application will 
 show an insufficient stock message.
 
-## Known Issues
-- NIL
+### Known Issues
+- Manual edits to `data/Inventory.txt` while the application is running will be
+  overwritten and lost on the next save.
+- Expiry dates are not validated against the current date at input time; a user
+  may enter a date that is already expired without receiving a warning.
 <div style="page-break-after: always;"></div>
-### Command Summary
+
+## Command Summary
 The following table summarizes the available commands:
 
 | Action             | Format                                                          | Example                                        |
