@@ -81,6 +81,9 @@ public class InventoryItem implements Storable {
     public int getBatchNumber() {
         return nextBatchNumber++;
     }
+    public int getNextBatchNumber() {
+        return nextBatchNumber;
+    }
     public int getTotalBatchQuantity() {
         return batches.size();
     }
