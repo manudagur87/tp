@@ -369,8 +369,7 @@ Searches all inventory items for names containing the specified keyword (case-in
 
 ### Feature: List History
 
-![HistoryCommand_ClassDiagram](diagrams/HistoryCommand_ClassDiagram.png)
-![HistoryCommand_SequenceDiagram](diagrams/HistoryCommand_SequenceDiagram.png)
+![HistoryCommand_SequenceDiagram](diagrams/HistoryCommandSequenceDiagram.png)
 
 **Purpose:** Display previous changes (ie `create`, `batch`, `withdraw`, `delete`, `remove-expired`) to the inventory in a sequential manner.
 
