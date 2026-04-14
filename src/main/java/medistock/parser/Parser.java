@@ -415,19 +415,22 @@ public class Parser {
     }
 
     private static Command prepareDelete(String text) throws MediStockException {
+        String invalidFormatMessage = "Invalid delete format. " + Ui.DELETE_FORMAT;
         boolean hasNamePrefix = getPrefixedIndex(text, "n/") != -1;
         boolean hasIndexPrefix = getPrefixedIndex(text, "i/") != -1;
 
         if (hasNamePrefix && hasIndexPrefix) {
-            throw new MediStockException("Invalid delete format. " + Ui.DELETE_FORMAT);
+            throw new MediStockException(invalidFormatMessage);
         }
+
+        rejectDuplicatePrefixes(text, invalidFormatMessage, "n/", "i/");
 
         if (text.startsWith("delete n/")) {
             return prepareDeleteName(text);
         } else if (text.startsWith("delete i/")) {
             return prepareDeleteIndex(text);
         }
-        throw new MediStockException("Invalid delete format. " + Ui.DELETE_FORMAT);
+        throw new MediStockException(invalidFormatMessage);
     }
 
     private static Command prepareDeleteName(String text) throws MediStockException {
