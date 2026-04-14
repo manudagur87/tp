@@ -22,6 +22,7 @@
     - [Target user profile](#target-user-profile)
     - [Value proposition](#value-proposition)
 - [User Stories](#user-stories)
+- [Instructions for manual testing](#instructions-for-manual-testing)
 
 ***
 ## Acknowledgements
@@ -657,7 +658,7 @@ simplifies stock-taking, and helps maintain minimum stock thresholds so that cri
 * *Command history* - The locally stored record of commands executed by the user, used to review past actions across sessions.
 
 
-## Appendix E: Instructions for Manual Testing
+## Instructions for Manual Testing
 
 The steps below assume the jar file is named `MediStock-v2.1.jar` and is run from its containing folder.
 
