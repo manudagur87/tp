@@ -150,6 +150,8 @@ Finds the item by name, organizes existing batches to flag expired ones, and ver
 
 ### Feature: Withdraw Stock
 
+![WithdrawCommand_ClassDiagram](diagrams/WithdrawCommandClassDiagram.png)
+
 ![WithdrawCommand_SequenceDiagram](diagrams/WithdrawCommandSequenceDiagram.png)
 
 **Purpose:** Withdraw a specified quantity of an item from the inventory, depleting from the earliest-expiring batches first.

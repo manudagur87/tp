@@ -1,0 +1,52 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide circle
+
+title WithdrawCommand Class Diagram
+
+class Parser
+
+abstract class "<<abstract>>\nCommand" as Command {
+    + execute(inventory: Inventory, ui: Ui, histories: List<String>)
+}
+
+class WithdrawCommand {
+    - name: String
+    - quantity: int
+    + execute(inventory: Inventory, ui: Ui, histories: List<String>)
+    + toHistoryString(withdrawnQuantity: int, unit: String): String
+}
+
+class Inventory {
+    + getItem(name: String): InventoryItem
+}
+
+class InventoryItem {
+    - batches: List<Batch>
+    + withdraw(quantity: int): int
+    + sortAndMarkExpiredBatches()
+}
+
+class Batch {
+    - quantity: int
+    - expiryDate: LocalDate
+    - isExpired: boolean
+    + isExpired(): boolean
+    + markExpired()
+    + reduceQuantity(quantity: int)
+}
+
+class Ui {
+    + {static} printWithdraw(requestedQuantity: int, withdrawnQuantity: int, item: InventoryItem)
+}
+
+WithdrawCommand -|> Command
+
+Parser ..> WithdrawCommand : creates >
+WithdrawCommand ..> Inventory : uses >
+WithdrawCommand ..> InventoryItem : uses >
+WithdrawCommand ..> Ui : uses >
+
+InventoryItem "1" --> "*" Batch : contains >
+
+@enduml
